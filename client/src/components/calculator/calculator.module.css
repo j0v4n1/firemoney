@@ -1,0 +1,107 @@
+.calculator {
+  position: relative;
+  border-radius: 15px;
+  width: 28%;
+  background-color: #ffffff;
+  padding: 29px 19px 36px 28px;
+}
+
+.calculator:before {
+  top: -24px;
+  left: -360px;
+  position: absolute;
+  content: url('../../images/woman.png');
+}
+
+.calculator__title {
+  margin: 0 0 11px;
+  font-weight: 400;
+  color: #45515f;
+  font-size: 22px;
+}
+
+.calculator__title:last-child {
+  margin: 0 0 23px;
+}
+
+.calculator__title_mt {
+  margin-top: 43px;
+}
+
+.calculator__button {
+  align-self: center;
+  width: 80%;
+  cursor: pointer;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 18px;
+  border-radius: 8px;
+  padding: 22px 44px;
+  border: none;
+  margin-top: 50px;
+  background: linear-gradient(to right, #ffc83e, #ff7347);
+}
+
+.calculator__top {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.calculator__bottom {
+  margin-top: 63px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.calculator__total-loan {
+  margin: 0;
+}
+
+.calculator__total-return {
+  margin: 0;
+}
+
+.calculator__total-date {
+  margin: 0;
+}
+
+.calculator__total-payment {
+  margin: 0;
+}
+
+.calculator__total-title {
+  margin: 0 0 2px;
+  font-weight: 300;
+  font-size: 14px;
+  color: #45515f;
+}
+
+.calculator__total-subtitle {
+  margin: 0 0 21px;
+  color: #f28925;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.calculator__total-subtitle:last-child {
+  margin-bottom: 0;
+}
+
+.thumb-block {
+  align-self: self-start;
+  margin-bottom: 8px;
+  font-weight: 700;
+  font-size: 20px;
+  color: #45515f;
+}
+
+.calculator__range-info {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  color: #c0c2c5;
+  font-size: 13px;
+  font-weight: 400;
+}

@@ -1,0 +1,57 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 64px;
+}
+
+.nav-menu {
+  width: 40%;
+}
+
+.nav-menu__list {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  list-style-type: none;
+}
+
+.nav-menu__link {
+  color: inherit;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.nav-menu__button {
+  cursor: pointer;
+  text-transform: uppercase;
+  font-family: 'Rubik', sans-serif;
+  border-radius: 8px;
+  color: inherit;
+  font-size: 13px;
+  padding: 0 40px;
+  border: none;
+  background-color: #ff7b00;
+}
+
+.nav-menu__button:hover {
+  background-color: rgba(255, 123, 0, 0.69);
+}
+
+.nav-menu__button:active {
+  background-color: rgba(255, 123, 0, 0.69);
+  transform: scale(0.98); /* Уменьшает размер кнопки при нажатии */
+}
+
+.logo {
+  color: #fff;
+}
+
+.logo__fire-word {
+  font-size: 33px;
+  font-weight: 400;
+}
+
+.logo__money-word {
+  font-size: 33px;
+  font-weight: 600;
+}
