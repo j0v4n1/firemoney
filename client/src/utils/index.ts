@@ -1,4 +1,5 @@
-export const generateDate = (today: Date) => {
+export const generateDate = (today: Date, daysToAdd: number) => {
+  today.setDate(today.getDate() + daysToAdd);
   const day = today.getDate();
   const month = today.getMonth() + 1;
   const year = today.getFullYear().toString().slice(-2);

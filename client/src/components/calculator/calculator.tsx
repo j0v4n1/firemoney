@@ -84,7 +84,9 @@ export default function Calculator() {
           <h3 className={styles['calculator__total-title']}>Вы берете</h3>
           <p className={styles['calculator__total-subtitle']}>{loan.toLocaleString('fr-FR')} ₽</p>
           <h3 className={styles['calculator__total-title']}>Дата возврата</h3>
-          <p className={styles['calculator__total-subtitle']}>{generateDate(today)}</p>
+          <p className={styles['calculator__total-subtitle']}>
+            {generateDate(today, term as number)}
+          </p>
         </div>
         <div className={styles['calculator__total-right']}>
           <h3 className={styles['calculator__total-title']}>К возврату</h3>
