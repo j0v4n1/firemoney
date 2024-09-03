@@ -1,6 +1,7 @@
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import styles from './calculator.module.css';
+import commonStyles from '../../styles/common.module.css';
 import React, { useState } from 'react';
 import arrowsImage from '../../images/arrows.svg';
 import { generateDate } from '../../utils';
@@ -77,7 +78,9 @@ export default function Calculator() {
           <div>3</div>
           <div>30</div>
         </div>
-        <button className={styles['calculator__button']}>Оформить заявку</button>
+        <button className={`${commonStyles['btn-order']} ${styles['btn-order_position']}`}>
+          Оформить заявку
+        </button>
       </div>
       <div className={styles['calculator__bottom']}>
         <div className={styles['calculator__total-left']}>

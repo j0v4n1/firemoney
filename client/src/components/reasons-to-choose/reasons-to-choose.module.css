@@ -1,0 +1,32 @@
+.reasons-to-choose {
+  padding: 65px 0 38px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f6f9fc;
+}
+
+.reasons-to-choose__list {
+  width: 66.6667%;
+  padding: 35px 0 43px;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  gap: 28px;
+}
+
+.reasons-to-choose__list-item {
+  border-radius: 22px;
+  background-color: white;
+  margin: 0;
+  padding: 51px 41px 47px 46px;
+}
+
+.btn-order_color {
+  margin-left: 10px;
+  border: 1px solid #c9d2dd;
+  background: rgba(255, 255, 255, 0);
+  font-weight: 500;
+  color: #45515f;
+}

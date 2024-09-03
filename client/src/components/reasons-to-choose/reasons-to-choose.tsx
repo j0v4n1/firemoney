@@ -1,55 +1,26 @@
-import styles from '../offers/offers.module.css';
+import styles from './reasons-to-choose.module.css';
+import commonStyles from '../../styles/common.module.css';
+import CommentCard from '../comment-card/comment-card';
+import { comments } from '../../mocks/data';
 
 export default function ReasonsToChoose() {
+  const commentList = comments.map(({ id, author, city, img, text }) => {
+    return (
+      <li key={id} className={styles['reasons-to-choose__list-item']}>
+        <CommentCard author={author} city={city} img={img} text={text} />
+      </li>
+    );
+  });
+
   return (
-    <section className={`${styles['article']} ${styles['reasons-to-choose']}`}>
-      <h2>Почему выбирают нас</h2>
-      <ul>
-        <li>
-          <div className={styles['comment']}>
-            <img className={styles['comment__img']} src="" alt="" />
-            <h3 className={styles['comment__title']}>Екатерина Романова, 26 лет</h3>
-            <p className={styles['comment__city']}>г. Москва</p>
-            <p className={styles['comment__subtitle']}>
-              Для того, чтобы воспользоваться услугой, вам необходимо лишь заполнить анкету на
-              сайте, все остальное сервис сделает за вас, сэкономив вам большое количество времени и
-              сил. Наш сервис работает со всеми клиентами, нам не важно, какая у вас кредитная
-              история и имеются ли текущие просрочки.
-            </p>
-            <div className={styles['comment__rate']}></div>
-          </div>
-        </li>
-        <li>
-          <div className={styles['comment']}>
-            <img className={styles['comment__img']} src="" alt="" />
-            <h3 className={styles['comment__title']}>Екатерина Романова, 26 лет</h3>
-            <p className={styles['comment__city']}>г. Москва</p>
-            <p className={styles['comment__subtitle']}>
-              Для того, чтобы воспользоваться услугой, вам необходимо лишь заполнить анкету на
-              сайте, все остальное сервис сделает за вас, сэкономив вам большое количество времени и
-              сил. Наш сервис работает со всеми клиентами, нам не важно, какая у вас кредитная
-            </p>
-            <div className={styles['comment__rate']}></div>
-          </div>
-        </li>
-        <li>
-          <div className={styles['comment']}>
-            <img className={styles['comment__img']} src="" alt="" />
-            <h3 className={styles['comment__title']}>Екатерина Романова, 26 лет</h3>
-            <p className={styles['comment__city']}>г. Москва</p>
-            <p className={styles['comment__subtitle']}>
-              Для того, чтобы воспользоваться услугой, вам необходимо лишь заполнить анкету на
-              сайте, все остальное сервис сделает за вас, сэкономив вам большое количество времени и
-              сил. Наш сервис работает со всеми клиентами, нам не важно, какая у вас кредитная
-              история и имеются ли текущие просрочки.
-            </p>
-            <div className={styles['comment__rate']}></div>
-          </div>
-        </li>
-      </ul>
-      <div>
-        <button>Оформить заявку</button>
-        <button>Все отзывы</button>
+    <section className={styles['reasons-to-choose']}>
+      <h2 className={commonStyles['section-title']}>Почему выбирают нас</h2>
+      <ul className={styles['reasons-to-choose__list']}>{commentList}</ul>
+      <div className={styles['reasons-to-choose__btn-wrapper']}>
+        <button className={commonStyles['btn-order']}>Оформить заявку</button>
+        <button className={`${commonStyles['btn-order']} ${styles['btn-order_color']}`}>
+          Все отзывы
+        </button>
       </div>
     </section>
   );

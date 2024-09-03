@@ -15,8 +15,8 @@ export default function App() {
       <Header />
       <main>
         <Offers />
-        <ReceivingMethods />
         <MoneyGuide />
+        <ReceivingMethods />
         <ReasonsToChoose />
         <OurClients />
         <OurServices />

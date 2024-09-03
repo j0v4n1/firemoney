@@ -1,9 +1,12 @@
 import styles from './offers.module.css';
+import commonStyles from '../../styles/common.module.css';
 
 export default function Offers() {
   return (
     <section className={styles['offers']}>
-      <h2 className={styles['offers__title']}>Лучшие предложения</h2>
+      <h2 className={`${commonStyles['section-title']} ${styles['section-title_mb']}`}>
+        Лучшие предложения
+      </h2>
       <ul className={styles['offers__list']}>
         <li className={styles['offers__list-item']}>
           <div className={styles['offers__line']}>lite</div>

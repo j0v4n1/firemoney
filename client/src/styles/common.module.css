@@ -1,0 +1,17 @@
+.section-title {
+  margin: 0;
+  color: #45515f;
+  font-size: 38px;
+}
+
+.btn-order {
+  cursor: pointer;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 18px;
+  border-radius: 8px;
+  padding: 22px 44px;
+  border: none;
+  background: linear-gradient(to right, #ffc83e, #ff7347);
+}

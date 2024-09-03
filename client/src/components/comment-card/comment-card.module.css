@@ -1,0 +1,40 @@
+.comment__title {
+  margin: 26px 0 19px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.comment__city {
+  margin: 19px 0 17px;
+  font-weight: 400;
+  font-size: 15px;
+}
+
+.comment__city:before {
+  content: url('../../images/location.svg');
+  margin-right: 8px;
+}
+
+.comment__text {
+  margin: 0 0 27px;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.comment__rate {
+  display: flex;
+  gap: 4px;
+}
+
+.comment__rate-star {
+  width: 12px;
+  height: 12px;
+  background-image: url('../../images/star_light.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+
+.comment__rate-star:last-child {
+  background-image: url('../../images/star.svg');
+}

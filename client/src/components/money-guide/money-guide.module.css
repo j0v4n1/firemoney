@@ -1,0 +1,96 @@
+.money-guide {
+  background-color: #f6f9fc;
+  padding: 0 0 45px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.section-title_mb {
+  margin-bottom: 72px;
+}
+
+.money-guide__line {
+  padding: 45px 0 0;
+  border-top: 1px solid rgba(69, 81, 95, 0.05);
+  width: 66.6667%;
+}
+
+.money-guide__list {
+  width: 66.6667%;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 0 0 44px;
+  list-style: none;
+}
+
+.money-guide__list-item {
+  width: 100%;
+}
+
+.money-guide__card {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.money-guide__card-img {
+  display: block;
+  margin-bottom: 34px;
+  width: 68px;
+  height: 77px;
+}
+
+.money-guide__card-line-wrapper {
+  position: relative;
+  width: 100%;
+  height: 7px;
+  display: flex;
+  margin-bottom: 34px;
+}
+
+.money-guide__card-line_linear {
+  width: 50%;
+  height: 7px;
+  background: linear-gradient(to right, #ffc83e, #ff9f47);
+}
+
+.money-guide__card-line {
+  position: relative;
+  width: 100%;
+  background-color: #fff;
+  height: 7px;
+  margin-bottom: 34px;
+}
+
+.money-guide__card-line-round {
+  z-index: 1;
+  top: -12px;
+  right: 148px;
+  color: #d6d3d3;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 145.5%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background-color: #fff;
+  position: absolute;
+}
+
+.money-guide__card-line-round_color {
+  background-color: #ffa147;
+  color: white;
+}
+
+.money-guide__card-text {
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 132%;
+  text-align: center;
+}

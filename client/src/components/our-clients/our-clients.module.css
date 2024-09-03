@@ -1,0 +1,16 @@
+.our-clients {
+  background-image: url('../../images/clients_back.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 55px 0 59px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.our-clients__list {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
