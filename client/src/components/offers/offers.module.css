@@ -1,0 +1,86 @@
+.offers {
+  padding: 0 0 50px;
+  background-color: #f6f9fc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.offers__title {
+  margin: 50px 0 36px;
+  color: #45515f;
+  font-size: 38px;
+}
+
+.offers__list {
+  width: 66.6667%;
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.offers__list-item {
+  overflow: hidden;
+  position: relative;
+  border-radius: 22px;
+  padding: 36px 70px;
+  background-color: white;
+}
+
+.offers__line {
+  line-height: 182%;
+  top: 13px;
+  left: -24px;
+  transform: rotate(-45deg);
+  width: 100px;
+  position: absolute;
+  text-align: center;
+  text-transform: uppercase;
+  background-color: #ffc83e;
+  color: white;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.offers__line_basic-color {
+  background-color: #ff7b00;
+}
+
+.offers__line_pro-color {
+  background-color: #fa5914;
+}
+
+.offers__list-item-title {
+  margin: 0 0 14px;
+  padding: 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.offers__list-item-subtitle {
+  font-weight: 500;
+  font-size: 15px;
+  color: #45515f;
+  margin: 0 0 12px;
+  padding: 0;
+}
+
+.offers__list-item-subtitle:before {
+  margin-right: 11px;
+  content: url('../../images/calendar.svg');
+}
+
+.offers__list-item-subtitle:last-child {
+  margin: 0;
+}
+
+.offers__list-item-subtitle:last-child:before {
+  content: url('../../images/ruble.svg');
+}
+
+.offers__footnote {
+  margin: 33px 0 0;
+  padding: 0;
+}
