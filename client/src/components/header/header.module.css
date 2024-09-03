@@ -1,10 +1,9 @@
 .header {
   color: white;
-  padding: 50px 15% 0;
-  height: 800px;
+  padding: 50px 15% 68px;
   background-image: url(../../images/header.jpg);
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
 }
 
 .header__info-container {

@@ -1,6 +1,7 @@
 import styles from './navbar.module.css';
+import { NavbarPosition, NavbarProps } from './navbar.types';
 
-export default function Navbar() {
+export default function Navbar({ position }: NavbarProps) {
   return (
     <div className={styles['container']}>
       <div className={styles['logo']}>
@@ -26,7 +27,14 @@ export default function Navbar() {
           </li>
         </ul>
       </nav>
-      <button className={styles['nav-menu__button']}>вход в личный кабинет</button>
+      {position === NavbarPosition.HEADER ? (
+        <button className={styles['nav-menu__button']}>вход в личный кабинет</button>
+      ) : (
+        <div className={styles['nav-menu__contacts']}>
+          <span className={styles['nav-menu__email']}>Kustohelp@gmail.com</span>
+          <span className={styles['nav-menu__phone']}>8 800 808-00-80</span>
+        </div>
+      )}
     </div>
   );
 }

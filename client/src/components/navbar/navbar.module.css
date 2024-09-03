@@ -1,6 +1,7 @@
 .container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 64px;
 }
 
@@ -16,7 +17,7 @@
 }
 
 .nav-menu__link {
-  color: inherit;
+  color: #fff;
   font-size: 18px;
   text-decoration: none;
 }
@@ -28,7 +29,7 @@
   border-radius: 8px;
   color: inherit;
   font-size: 13px;
-  padding: 0 40px;
+  padding: 18px 40px;
   border: none;
   background-color: #ff7b00;
 }
@@ -40,6 +41,34 @@
 .nav-menu__button:active {
   background-color: rgba(255, 123, 0, 0.69);
   transform: scale(0.98); /* Уменьшает размер кнопки при нажатии */
+}
+
+.nav-menu__contacts {
+  color: #fff;
+  width: 33%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-menu__email {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.nav-menu__email:before {
+  margin-right: 10px;
+  content: url('../../images/email.svg');
+}
+
+.nav-menu__phone {
+  font-size: 22px;
+}
+
+.nav-menu__phone:before {
+  margin-right: 10px;
+  content: url('../../images/phone.svg');
 }
 
 .logo {

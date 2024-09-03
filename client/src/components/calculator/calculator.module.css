@@ -7,7 +7,7 @@
 }
 
 .calculator:before {
-  top: -24px;
+  top: 18px;
   left: -360px;
   position: absolute;
   content: url('../../images/woman.png');

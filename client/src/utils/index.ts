@@ -25,11 +25,11 @@ export const generateDate = (today: Date, daysToAdd: number) => {
         return 'августа';
       case '09':
         return 'сентября';
-      case '10':
+      case 10:
         return 'октября';
-      case '11':
+      case 11:
         return 'ноября';
-      case '12':
+      case 12:
         return 'декабря';
       default:
         return 'ошибка';

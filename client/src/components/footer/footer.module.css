@@ -1,0 +1,17 @@
+.footer {
+  padding: 50px 15%;
+  background-image: url('../../images/footer.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.footer__bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer__social {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

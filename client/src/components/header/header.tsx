@@ -1,12 +1,12 @@
 import styles from './header.module.css';
-import woman from '../../images/woman.png';
 import Navbar from '../navbar/navbar';
 import Calculator from '../calculator/calculator';
+import { NavbarPosition } from '../navbar/navbar.types';
 
 export default function Header() {
   return (
     <header className={styles['header']}>
-      <Navbar />
+      <Navbar position={NavbarPosition.HEADER} />
       <div className={styles['header__info-container']}>
         <div className={styles['header__info']}>
           <div className={styles['header__info-title']}>
