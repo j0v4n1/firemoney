@@ -1,0 +1,7 @@
+.faq {
+  padding: 59px 0 69px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f6f9fc;
+}

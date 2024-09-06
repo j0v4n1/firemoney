@@ -1,62 +1,10 @@
+import { accordionItems } from '../../mocks/data';
 import styles from './accordion.module.css';
+import AccordionItem from '../accordion-item/accordion-item';
 
 export default function Accordion() {
-  return (
-    <div className={styles['accordion']}>
-      <div className={styles['accordion__item']}>
-        <h3 className={styles['accordion__header']}>Как долго обрабатывается заявка?</h3>
-        <p className={styles['accordion__body']}>
-          Вашим анкетным данным сервис автоматически выбирает наиболее выгодные предложения и
-          работает непосредственно с кредитными организациями, предоставляющими микрозаймы в случае
-          приобретения платной услуги, вы получаете полный доступ к функциональности сервиса сроком
-          на 1 год с момента активации услуги!
-        </p>
-      </div>
-      <div className={styles['accordion__item']}>
-        <h3 className={styles['accordion__header']}>Как погасить полученный займ?</h3>
-        <p className={styles['accordion__body']}>
-          Вашим анкетным данным сервис автоматически выбирает наиболее выгодные предложения и
-          работает непосредственно с кредитными организациями, предоставляющими микрозаймы в случае
-          приобретения платной услуги, вы получаете полный доступ к функциональности сервиса сроком
-          на 1 год с момента активации услуги!
-        </p>
-      </div>
-      <div className={styles['accordion__item']}>
-        <h3 className={styles['accordion__header']}>Как получить деньги?</h3>
-        <p className={styles['accordion__body']}>
-          Вашим анкетным данным сервис автоматически выбирает наиболее выгодные предложения и
-          работает непосредственно с кредитными организациями, предоставляющими микрозаймы в случае
-          приобретения платной услуги, вы получаете полный доступ к функциональности сервиса сроком
-          на 1 год с момента активации услуги!
-        </p>
-      </div>
-      <div className={styles['accordion__item']}>
-        <h3 className={styles['accordion__header']}>География сервиса?</h3>
-        <p className={styles['accordion__body']}>
-          Вашим анкетным данным сервис автоматически выбирает наиболее выгодные предложения и
-          работает непосредственно с кредитными организациями, предоставляющими микрозаймы в случае
-          приобретения платной услуги, вы получаете полный доступ к функциональности сервиса сроком
-          на 1 год с момента активации услуги!
-        </p>
-      </div>
-      <div className={styles['accordion__item']}>
-        <h3 className={styles['accordion__header']}>Как остановить обработку заявки?</h3>
-        <p className={styles['accordion__body']}>
-          Вашим анкетным данным сервис автоматически выбирает наиболее выгодные предложения и
-          работает непосредственно с кредитными организациями, предоставляющими микрозаймы в случае
-          приобретения платной услуги, вы получаете полный доступ к функциональности сервиса сроком
-          на 1 год с момента активации услуги!
-        </p>
-      </div>
-      <div className={styles['accordion__item']}>
-        <h3 className={styles['accordion__header']}>Какова стоимость услуги?</h3>
-        <p className={styles['accordion__body']}>
-          Вашим анкетным данным сервис автоматически выбирает наиболее выгодные предложения и
-          работает непосредственно с кредитными организациями, предоставляющими микрозаймы в случае
-          приобретения платной услуги, вы получаете полный доступ к функциональности сервиса сроком
-          на 1 год с момента активации услуги!
-        </p>
-      </div>
-    </div>
-  );
+  const accordionItemsList = accordionItems.map((item) => (
+    <AccordionItem key={item.id} id={item.id} header={item.header} body={item.body}></AccordionItem>
+  ));
+  return <div className={styles['accordion']}>{accordionItemsList}</div>;
 }
