@@ -16,13 +16,6 @@
   gap: 28px;
 }
 
-.reasons-to-choose__list-item {
-  border-radius: 22px;
-  background-color: white;
-  margin: 0;
-  padding: 51px 41px 47px 46px;
-}
-
 .btn-order_color {
   margin-left: 10px;
   border: 1px solid #c9d2dd;

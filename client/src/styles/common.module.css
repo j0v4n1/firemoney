@@ -15,3 +15,10 @@
   border: none;
   background: linear-gradient(to right, #ffc83e, #ff7347);
 }
+
+.box {
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0px 4px 44px 0px rgba(84, 104, 123, 0.05);
+  backdrop-filter: blur(6px);
+}

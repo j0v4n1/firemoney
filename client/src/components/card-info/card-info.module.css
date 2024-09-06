@@ -1,0 +1,27 @@
+.card-info {
+  padding: 44px 46px;
+  border-radius: 22px;
+  border: 1px solid #f8ebeb;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0px 4px 44px 0px rgba(84, 104, 123, 0.05);
+  backdrop-filter: blur(6px);
+}
+
+.card-info__title {
+  text-align: center;
+  color: #45515f;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 31px;
+}
+
+.card-info__paragraph {
+  color: #536473;
+  font-size: 16px;
+  font-weight: 300;
+  margin: 0;
+}
+
+.card-info__paragraph:nth-child(3) {
+  margin: 15px 0 15px;
+}

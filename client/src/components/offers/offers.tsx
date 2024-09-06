@@ -8,7 +8,7 @@ export default function Offers() {
         Лучшие предложения
       </h2>
       <ul className={styles['offers__list']}>
-        <li className={styles['offers__list-item']}>
+        <li className={`${styles['offers__list-item']} ${commonStyles['box']}`}>
           <div className={styles['offers__line']}>lite</div>
           <h3 className={styles['offers__list-item-title']}>
             <span style={{ color: '#FFC83E' }}>15 000 ₽ </span> на{' '}
@@ -21,7 +21,7 @@ export default function Offers() {
             <span style={{ fontWeight: 300 }}>К возврату:</span> 17 100 ₽
           </p>
         </li>
-        <li className={styles['offers__list-item']}>
+        <li className={`${styles['offers__list-item']} ${commonStyles['box']}`}>
           <div className={`${styles['offers__line']} ${styles['offers__line_basic-color']}`}>
             basic
           </div>
@@ -36,7 +36,7 @@ export default function Offers() {
             <span style={{ fontWeight: 300 }}>К возврату:</span> 40 000 ₽
           </p>
         </li>
-        <li className={styles['offers__list-item']}>
+        <li className={`${styles['offers__list-item']} ${commonStyles['box']}`}>
           <div className={`${styles['offers__line']} ${styles['offers__line_pro-color']}`}>pro</div>
           <h3 className={styles['offers__list-item-title']}>
             <span style={{ color: '#FA5914' }}>45 000 ₽</span> на{' '}

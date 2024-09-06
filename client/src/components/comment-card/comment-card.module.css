@@ -1,3 +1,8 @@
+.comment {
+  margin: 0;
+  padding: 51px 41px 47px 46px;
+}
+
 .comment__title {
   margin: 26px 0 19px;
   font-size: 18px;

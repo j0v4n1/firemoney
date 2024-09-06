@@ -11,20 +11,19 @@
 }
 
 .offers__list {
-  width: 66.6667%;
+  width: 100%;
+  max-width: 1280px;
   display: flex;
   justify-content: space-between;
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 36px 0 0;
 }
 
 .offers__list-item {
   overflow: hidden;
   position: relative;
-  border-radius: 22px;
   padding: 36px 70px;
-  background-color: white;
 }
 
 .offers__line {

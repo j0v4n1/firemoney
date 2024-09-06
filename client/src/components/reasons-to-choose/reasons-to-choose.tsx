@@ -5,11 +5,7 @@ import { comments } from '../../mocks/data';
 
 export default function ReasonsToChoose() {
   const commentList = comments.map(({ id, author, city, img, text }) => {
-    return (
-      <li key={id} className={styles['reasons-to-choose__list-item']}>
-        <CommentCard author={author} city={city} img={img} text={text} />
-      </li>
-    );
+    return <CommentCard key={id} author={author} city={city} img={img} text={text} />;
   });
 
   return (

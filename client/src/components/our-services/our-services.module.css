@@ -1,0 +1,16 @@
+.our-services {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(6px);
+  padding: 56px 0 72px;
+}
+
+.our-services__cards-wrapper {
+  width: 100%;
+  max-width: 1280px;
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
