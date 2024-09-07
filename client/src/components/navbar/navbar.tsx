@@ -3,7 +3,7 @@ import { NavbarPosition, NavbarProps } from './navbar.types';
 
 export default function Navbar({ position }: NavbarProps) {
   return (
-    <div className={styles['container']}>
+    <div className={styles['navbar']}>
       <div className={styles['logo']}>
         <span className={styles['logo__fire-word']}>Fire</span>
         <span className={styles['logo__money-word']}>Money</span>

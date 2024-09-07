@@ -10,14 +10,9 @@
   margin-bottom: 72px;
 }
 
-.money-guide__line {
-  padding: 45px 0 0;
-  border-top: 1px solid rgba(69, 81, 95, 0.05);
-  width: 66.6667%;
-}
-
 .money-guide__list {
-  width: 66.6667%;
+  width: 100%;
+  max-width: 1280px;
   display: flex;
   justify-content: center;
   padding: 0;

@@ -8,7 +8,7 @@ import wallet from '../../images/wallet.svg';
 export default function MoneyGuide() {
   return (
     <section className={styles['money-guide']}>
-      <div className={styles['money-guide__line']}></div>
+      <div className={commonStyles['line']}></div>
       <h2 className={`${commonStyles['section-title']} ${styles['section-title_mb']}`}>
         Как получить деньги
       </h2>
