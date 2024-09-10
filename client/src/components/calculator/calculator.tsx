@@ -4,7 +4,7 @@ import styles from './calculator.module.css';
 import commonStyles from '../../styles/common.module.css';
 import React, { useState } from 'react';
 import arrowsImage from '../../images/arrows.svg';
-import { generateDate } from '../../utils';
+import { generateDate } from '../../utils/utils';
 
 export default function Calculator() {
   const [loan, setLoan] = useState<number | number[]>(1000);

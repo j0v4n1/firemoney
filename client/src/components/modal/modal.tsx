@@ -5,16 +5,40 @@ import { Modal as ModalBootstrap } from 'react-bootstrap/';
 import Form from 'react-bootstrap/Form';
 import { useAppDispatch, useAppSelector } from '../../store/store.types';
 import { closeModal } from '../../store/slices/modal/modal';
-import { ModalProps, ModalTypes } from './modal.types';
-import { useState, useEffect } from 'react';
+import { ModalTypes } from './modal.types';
+import { useState } from 'react';
 
 export default function Modal() {
   const { isOpened } = useAppSelector((store) => store.modal);
+
   const dispatch = useAppDispatch();
 
   const [type, setType] = useState(ModalTypes.LOGIN);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
 
-  const onClose = () => dispatch(closeModal());
+  const onClose = () => {
+    dispatch(closeModal());
+    setTimeout(() => {
+      setEmail('');
+      setPassword('');
+      setRepeatPassword('');
+      setType(ModalTypes.LOGIN);
+    }, 300);
+  };
+
+  const handleFormRepeatPassword = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRepeatPassword(event.target.value);
+  };
+  const handleFormPassword = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setPassword(event.target.value);
+  };
+  const handleFormEmail = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setEmail(event.target.value);
+  };
 
   const generateTitle = () => {
     switch (type) {
@@ -94,18 +118,43 @@ export default function Modal() {
           <>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Электронная почта</Form.Label>
-              <Form.Control type="email" placeholder="" />
+              <Form.Control value={email} onChange={handleFormEmail} type="email" placeholder="" />
             </Form.Group>
             <Form.Group style={{ margin: '0 0 16px' }}>
               <Form.Label htmlFor="password">Пароль</Form.Label>
-              <Form.Control type="password" id="password" aria-describedby="passwordHelpBlock" />
+              <Form.Control
+                value={password}
+                onChange={handleFormPassword}
+                type="password"
+                id="password"
+                aria-describedby="passwordHelpBlock"
+                isInvalid={password !== repeatPassword}
+                isValid={password === repeatPassword && password !== '' && repeatPassword !== ''}
+              />
             </Form.Group>
             <Form.Group>
-              <Form.Label htmlFor="repeatPassword">Повторите пароль</Form.Label>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  margin: '0 0 8px',
+                }}>
+                <Form.Label style={{ margin: 0 }} htmlFor="repeatPassword">
+                  Повторите пароль
+                </Form.Label>
+                {password === repeatPassword ? null : (
+                  <Form.Text style={{ color: 'red', margin: 0 }}>Пароли не совпадают</Form.Text>
+                )}
+              </div>
               <Form.Control
+                value={repeatPassword}
+                onChange={handleFormRepeatPassword}
                 type="password"
                 id="repeatPassword"
                 aria-describedby="passwordHelpBlock"
+                isInvalid={password !== repeatPassword}
+                isValid={password === repeatPassword && password !== '' && repeatPassword !== ''}
               />
               <Form.Text className={styles['modal__help-block']} id="passwordHelpBlock" muted>
                 {generateLinks()}
@@ -118,7 +167,7 @@ export default function Modal() {
           <>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Электронная почта</Form.Label>
-              <Form.Control type="email" placeholder="" />
+              <Form.Control value={email} onChange={handleFormEmail} type="email" placeholder="" />
               <Form.Text className={styles['modal__help-block']} id="passwordHelpBlock" muted>
                 {generateLinks()}
               </Form.Text>
@@ -130,11 +179,13 @@ export default function Modal() {
           <>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Электронная почта</Form.Label>
-              <Form.Control type="email" placeholder="" />
+              <Form.Control value={email} onChange={handleFormEmail} type="email" placeholder="" />
             </Form.Group>
             <Form.Group>
               <Form.Label htmlFor="inputPassword5">Пароль</Form.Label>
               <Form.Control
+                value={password}
+                onChange={handleFormPassword}
                 type="password"
                 id="inputPassword5"
                 aria-describedby="passwordHelpBlock"
