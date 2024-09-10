@@ -17,7 +17,7 @@ export default function OurServices() {
   });
 
   return (
-    <section className={styles['our-services']}>
+    <section id="service" className={styles['our-services']}>
       <h2 className={commonStyles['section-title']}>О сервисе</h2>
       <div className={styles['our-services__cards-wrapper']}>{cardList}</div>
     </section>

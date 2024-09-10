@@ -5,4 +5,37 @@
   gap: 4px;
   width: 100%;
   max-width: 1280px;
+  --bs-accordion-border-color: none;
+  --bs-accordion-active-color: #fff;
+  --bs-accordion-btn-focus-box-shadow: none;
+  --bs-accordion-border-radius: 12px;
+  --bs-accordion-inner-border-radius: 12px;
+}
+
+.accordion__item {
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0px 4px 44px 0px rgba(84, 104, 123, 0.05);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-family: Rubik;
+  font-size: 16px;
+  font-weight: 300;
+  background: linear-gradient(to right, #ff7347, #ffc83e);
+}
+
+.accordion__header {
+  border-radius: 12px;
+  background: linear-gradient(to right, #ff7347, #ffc83e);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  transition: 0.5s;
+}
+
+.accordion__header:hover {
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.8),
+    0 0 20px rgba(255, 255, 255, 0.6),
+    0 0 30px rgba(255, 255, 255, 0.4);
 }

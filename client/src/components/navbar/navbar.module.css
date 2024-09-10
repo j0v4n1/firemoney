@@ -8,7 +8,8 @@
 }
 
 .nav-menu {
-  width: 40%;
+  width: 100%;
+  max-width: 473px;
 }
 
 .nav-menu__list {
@@ -16,12 +17,23 @@
   justify-content: space-between;
   padding: 0;
   list-style-type: none;
+  width: 100%;
+  max-width: 473px;
+  margin: 0;
 }
 
 .nav-menu__link {
   color: #fff;
   font-size: 18px;
   text-decoration: none;
+  transition: 0.5s;
+}
+
+.nav-menu__link:hover {
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.8),
+    0 0 20px rgba(255, 255, 255, 0.6),
+    0 0 30px rgba(255, 255, 255, 0.4);
 }
 
 .nav-menu__button {
@@ -34,15 +46,18 @@
   padding: 18px 40px;
   border: none;
   background-color: #ff7b00;
+  transition: 0.5s;
 }
 
 .nav-menu__button:hover {
-  background-color: rgba(255, 123, 0, 0.69);
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.8),
+    0 0 20px rgba(255, 255, 255, 0.6),
+    0 0 30px rgba(255, 255, 255, 0.4);
 }
 
 .nav-menu__button:active {
-  background-color: rgba(255, 123, 0, 0.69);
-  transform: scale(0.98); /* Уменьшает размер кнопки при нажатии */
+  transform: scale(0.98);
 }
 
 .nav-menu__contacts {
@@ -75,6 +90,7 @@
 
 .logo {
   color: #fff;
+  margin-bottom: 6px;
 }
 
 .logo__fire-word {

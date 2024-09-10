@@ -1,10 +1,20 @@
 import { accordionItems } from '../../mocks/data';
 import styles from './accordion.module.css';
-import AccordionItem from '../accordion-item/accordion-item';
+import { Accordion as AccordionBootstrap } from 'react-bootstrap/';
 
 export default function Accordion() {
-  const accordionItemsList = accordionItems.map((item) => (
-    <AccordionItem key={item.id} id={item.id} header={item.header} body={item.body}></AccordionItem>
+  const accordionItemsList = accordionItems.map((item, index) => (
+    <AccordionBootstrap.Item
+      className={styles['accordion__item']}
+      key={item.id}
+      eventKey={`${index}`}>
+      <AccordionBootstrap.Button className={styles['accordion__header']}>
+        {item.header}
+      </AccordionBootstrap.Button>
+      <AccordionBootstrap.Body>{item.body}</AccordionBootstrap.Body>
+    </AccordionBootstrap.Item>
   ));
-  return <div className={styles['accordion']}>{accordionItemsList}</div>;
+  return (
+    <AccordionBootstrap className={styles['accordion']}>{accordionItemsList}</AccordionBootstrap>
+  );
 }

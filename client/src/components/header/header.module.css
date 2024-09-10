@@ -1,9 +1,22 @@
 .header {
+  position: relative;
+  padding: 50px 0 68px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   color: white;
-  padding: 50px 15% 68px;
   background-image: url(../../images/header.jpg);
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.header::before {
+  z-index: 1;
+  height: 655px;
+  bottom: 0;
+  right: 725px;
+  position: absolute;
+  content: url('../../images/woman.png');
 }
 
 .header__info-container {

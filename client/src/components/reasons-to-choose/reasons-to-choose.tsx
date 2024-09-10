@@ -9,7 +9,7 @@ export default function ReasonsToChoose() {
   });
 
   return (
-    <section className={styles['reasons-to-choose']}>
+    <section id="reasons" className={styles['reasons-to-choose']}>
       <h2 className={commonStyles['section-title']}>Почему выбирают нас</h2>
       <ul className={styles['reasons-to-choose__list']}>{commentList}</ul>
       <div className={styles['reasons-to-choose__btn-wrapper']}>

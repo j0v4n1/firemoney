@@ -1,3 +1,4 @@
+import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Header from '../header/header';
 import Offers from '../offers/offers';
 import ReceivingMethods from '../receiving-methods/receiving-methods';
@@ -8,6 +9,7 @@ import OurServices from '../our-services/our-services';
 import Faq from '../faq/faq';
 import GetMoney from '../get-money/get-money';
 import Footer from '../footer/footer';
+import Modal from '../modal/modal';
 
 export default function App() {
   return (
@@ -24,6 +26,7 @@ export default function App() {
         <GetMoney />
         <Footer />
       </main>
+      <Modal />
     </>
   );
 }
