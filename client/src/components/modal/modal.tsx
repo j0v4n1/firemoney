@@ -2,11 +2,13 @@ import styles from './modal.module.css';
 import commonStyles from '../../styles/common.module.css';
 import Button from 'react-bootstrap/Button';
 import { Modal as ModalBootstrap } from 'react-bootstrap/';
+import { Spinner } from 'react-bootstrap/';
 import Form from 'react-bootstrap/Form';
 import { useAppDispatch, useAppSelector } from '../../store/store.types';
 import { closeModal } from '../../store/slices/modal/modal';
 import { ModalTypes } from './modal.types';
 import React, { useState } from 'react';
+import { sendPhoneNumber, sendVerificationCode } from '../../utils/api';
 
 export default function Modal() {
   const { isOpened } = useAppSelector((store) => store.modal);
@@ -17,9 +19,11 @@ export default function Modal() {
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
   const [number, setNumber] = useState('');
+  const [verificationCode, setVerificationCode] = useState<number | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
+  const [isDataSending, seIsDataSending] = useState(false);
 
   const onClose = () => {
     dispatch(closeModal());
@@ -77,28 +81,26 @@ export default function Modal() {
         return (
           <div className={styles['modal__text']}>
             Уже зарегистрированы?{' '}
-            <a
+            <span
               onClick={() => {
                 setType(ModalTypes.LOGIN);
               }}
-              className={styles['modal__link']}
-              href="#">
+              className={styles['modal__link']}>
               Войти
-            </a>
+            </span>
           </div>
         );
       case ModalTypes.RESET:
         return (
           <div className={styles['modal__text']}>
             Вспомнили пароль?{' '}
-            <a
+            <span
               onClick={() => {
                 setType(ModalTypes.LOGIN);
               }}
-              className={styles['modal__link']}
-              href="#">
+              className={styles['modal__link']}>
               Войти
-            </a>
+            </span>
           </div>
         );
       default:
@@ -106,33 +108,81 @@ export default function Modal() {
           <>
             <div className={styles['modal__text']}>
               Вы — новый пользователь?{' '}
-              <a
+              <span
                 onClick={() => {
-                  setType(ModalTypes.REGISTER);
+                  setType(ModalTypes.VERIFICATION);
                 }}
-                className={styles['modal__link']}
-                href="#">
+                className={styles['modal__link']}>
                 Зарегистрироваться
-              </a>
+              </span>
             </div>
             <div className={styles['modal__text']}>
               Забыли пароль?{' '}
-              <a
+              <span
                 onClick={() => {
                   setType(ModalTypes.RESET);
                 }}
-                className={styles['modal__link']}
-                href="#">
+                className={styles['modal__link']}>
                 Восстановить пароль
-              </a>
+              </span>
             </div>
           </>
         );
     }
   };
 
+  const handleSendButton = (type: ModalTypes) => {
+    switch (type) {
+      case ModalTypes.VERIFICATION:
+        sendPhoneNumber(number)
+          .then((data) => {
+            setType(ModalTypes.VALIDATION);
+            console.log(data);
+          })
+          .catch((error) => console.log(error));
+        break;
+      case ModalTypes.VALIDATION:
+        if (verificationCode) {
+          sendVerificationCode(verificationCode).then((data) => console.log(data));
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
   const generateForm = () => {
     switch (type) {
+      case ModalTypes.VERIFICATION:
+        return (
+          <>
+            <Form.Group className="mb-3">
+              <Form.Label column={true}>Номер телефона</Form.Label>
+              <Form.Control
+                className={styles['modal__form-number']}
+                value={number}
+                onChange={handleFormNumber}
+                type="text"
+                placeholder=""
+              />
+            </Form.Group>
+          </>
+        );
+      case ModalTypes.VALIDATION:
+        return (
+          <>
+            <Form.Group className="mb-3">
+              <Form.Label column={true}>Введите код из SMS</Form.Label>
+              <Form.Control
+                className={styles['modal__form-number']}
+                value={number}
+                onChange={handleFormNumber}
+                type="text"
+                placeholder=""
+              />
+            </Form.Group>
+          </>
+        );
       case ModalTypes.REGISTER:
         return (
           <>
@@ -145,16 +195,6 @@ export default function Modal() {
               <Form.Control
                 value={lastName}
                 onChange={handleFormLastName}
-                type="text"
-                placeholder=""
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label column={true}>Номер телефона</Form.Label>
-              <Form.Control
-                className={styles['modal__form-number']}
-                value={number}
-                onChange={handleFormNumber}
                 type="text"
                 placeholder=""
               />
@@ -262,8 +302,16 @@ export default function Modal() {
       </ModalBootstrap.Header>
       <ModalBootstrap.Body>{generateForm()}</ModalBootstrap.Body>
       <ModalBootstrap.Footer>
-        <Button className={commonStyles['btn-order'] + ' ' + styles['btn-order_size']}>
-          Отправить
+        <Button
+          disabled={isDataSending}
+          onClick={() => {
+            if (type !== ModalTypes.VERIFICATION) {
+              seIsDataSending(true);
+            }
+            handleSendButton(type);
+          }}
+          className={commonStyles['btn-order'] + ' ' + styles['btn-order_size']}>
+          {isDataSending ? <Spinner /> : 'Отправить'}
         </Button>
       </ModalBootstrap.Footer>
     </ModalBootstrap>

@@ -11,10 +11,18 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
   }
 };
 
+export const smsCodeValidation = async (req: Request, res: Response) => {
+  const isValidNumber = await userService.smsCodeValidation(req.body);
+  if (isValidNumber) {
+    return responseData(res, 'success');
+  }
+  return responseData(res, 'failure');
+};
+
 export const sendVerificationCode = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const verificationCode = await userService.sendVerificationCode(req.body);
-    return verificationCode;
+    const verificationCode = await userService.createVerificationCode(req.body);
+    return responseData(res, 'success', verificationCode);
   } catch (err) {
     next(err);
   }

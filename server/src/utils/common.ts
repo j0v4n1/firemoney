@@ -5,9 +5,9 @@ export const responseData = (res: Response, status: 'success' | 'failure', data?
   }, 3000);
 };
 
-export const verificationCode = () => {
+export const createVerificationCode = () => {
   let code = '';
-  for (let i = 0; i <= 4; i++) {
+  for (let i = 0; i < 4; i++) {
     code += Math.floor(Math.random() * 10);
   }
   return +code;

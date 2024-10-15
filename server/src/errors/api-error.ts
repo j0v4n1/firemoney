@@ -22,6 +22,6 @@ export default class ApiError extends Error {
     return new ApiError(500, `Не корректный запрос с клиента`);
   }
   static conflictError(reason: string) {
-    return new ApiError(409, `Конфликта с текущим состоянием ресурса, причина: ${reason}`);
+    return new ApiError(409, `Конфликт с текущим состоянием ресурса, причина: ${reason}`);
   }
 }
