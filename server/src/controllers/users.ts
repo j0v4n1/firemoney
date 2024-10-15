@@ -4,7 +4,7 @@ import { responseData } from '../utils/common';
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await userService.registration(req.body);
+    const user = await userService.register(req.body);
     return responseData(res, 'success', user);
   } catch (err) {
     next(err);

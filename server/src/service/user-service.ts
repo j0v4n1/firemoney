@@ -4,7 +4,7 @@ import ApiError from '../errors/api-error';
 import { verificationCode } from '../utils/common';
 
 class UserService {
-  async registration(user: User) {
+  async register(user: User) {
     const { password, number, email, ...rest } = user;
     const emailCandidate = await UserModel.find({ email });
     if (emailCandidate) {
