@@ -2,8 +2,12 @@ import styles from './header.module.css';
 import Navbar from '../navbar/navbar';
 import Calculator from '../calculator/calculator';
 import { NavbarPosition } from '../navbar/navbar.types';
+import woman from '../../images/woman.png';
 
 export default function Header() {
+  const screenWidth = window.innerWidth;
+  const imagePosition = (1920 - screenWidth) / 2;
+  const right = 725 - imagePosition;
   return (
     <header className={styles['header']}>
       <Navbar position={NavbarPosition.HEADER} />
@@ -22,6 +26,7 @@ export default function Header() {
         </div>
         <Calculator />
       </div>
+      <img style={{ right }} className={styles['header__image']} src={woman} alt="женщина-баннер" />
     </header>
   );
 }

@@ -10,7 +10,7 @@
   background-size: cover;
 }
 
-.header::before {
+.header__image {
   z-index: 1;
   height: 655px;
   bottom: 0;

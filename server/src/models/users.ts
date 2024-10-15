@@ -1,13 +1,30 @@
 import { Schema, model } from 'mongoose';
 
-export type TUser = {
+export type User = {
+  name: string;
+  lastName: string;
   email: string;
+  number: string;
   password: string;
   isActivated: boolean;
   activationLink: string;
+  verificationCode: number;
 };
 
-const UserSchema = new Schema<TUser>({
+const UserSchema = new Schema<User>({
+  name: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  number: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   email: {
     type: String,
     required: true,
@@ -24,6 +41,9 @@ const UserSchema = new Schema<TUser>({
   activationLink: {
     type: String,
   },
+  verificationCode: {
+    type: Number,
+  },
 });
 
-export default model<TUser>('user', UserSchema);
+export default model<User>('user', UserSchema);

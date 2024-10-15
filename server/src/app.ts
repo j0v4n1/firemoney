@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import 'dotenv/config';
-import authMiddleware from './middlewares/auth';
 
 const { PORT, PORT_DB, DB_NAME } = process.env;
 

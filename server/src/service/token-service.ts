@@ -6,7 +6,7 @@ import Token from '../models/token';
 import ApiError from '../errors/api-error';
 
 class TokenService {
-  generateTokens(payload: { id: string; name: string; email: string; passport: string }) {
+  generateTokens(payload: { id: string; name: string; email: string }) {
     if (!process.env.JWT_SECRET) {
       throw ApiError.serverSideError('секретный ключ');
     }

@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import { useAppDispatch, useAppSelector } from '../../store/store.types';
 import { closeModal } from '../../store/slices/modal/modal';
 import { ModalTypes } from './modal.types';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 export default function Modal() {
   const { isOpened } = useAppSelector((store) => store.modal);
@@ -14,6 +14,9 @@ export default function Modal() {
   const dispatch = useAppDispatch();
 
   const [type, setType] = useState(ModalTypes.LOGIN);
+  const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [number, setNumber] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
@@ -35,6 +38,23 @@ export default function Modal() {
   };
   const handleFormPassword = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setPassword(event.target.value);
+  };
+  const handleFormName = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setName(event.target.value);
+  };
+  const handleFormLastName = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setLastName(event.target.value);
+  };
+  const handleFormNumber = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    let value = event.target.value;
+
+    value = value.replace(/[^0-9]/g, '');
+
+    if (!value.startsWith('7')) {
+      value = '7' + value;
+    }
+
+    setNumber('+' + value);
   };
   const handleFormEmail = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setEmail(event.target.value);
@@ -116,12 +136,37 @@ export default function Modal() {
       case ModalTypes.REGISTER:
         return (
           <>
+            <Form.Group className="mb-3">
+              <Form.Label column={true}>Имя</Form.Label>
+              <Form.Control value={name} onChange={handleFormName} type="text" placeholder="" />
+            </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Электронная почта</Form.Label>
+              <Form.Label column={true}>Фамилия</Form.Label>
+              <Form.Control
+                value={lastName}
+                onChange={handleFormLastName}
+                type="text"
+                placeholder=""
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label column={true}>Номер телефона</Form.Label>
+              <Form.Control
+                className={styles['modal__form-number']}
+                value={number}
+                onChange={handleFormNumber}
+                type="text"
+                placeholder=""
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label column={true}>Электронная почта</Form.Label>
               <Form.Control value={email} onChange={handleFormEmail} type="email" placeholder="" />
             </Form.Group>
             <Form.Group style={{ margin: '0 0 16px' }}>
-              <Form.Label htmlFor="password">Пароль</Form.Label>
+              <Form.Label column={true} htmlFor="password">
+                Пароль
+              </Form.Label>
               <Form.Control
                 value={password}
                 onChange={handleFormPassword}
@@ -140,7 +185,7 @@ export default function Modal() {
                   alignItems: 'center',
                   margin: '0 0 8px',
                 }}>
-                <Form.Label style={{ margin: 0 }} htmlFor="repeatPassword">
+                <Form.Label style={{ margin: 0 }} htmlFor="repeatPassword" column={true}>
                   Повторите пароль
                 </Form.Label>
                 {password === repeatPassword ? null : (
@@ -166,7 +211,7 @@ export default function Modal() {
         return (
           <>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Электронная почта</Form.Label>
+              <Form.Label column={true}>Электронная почта</Form.Label>
               <Form.Control value={email} onChange={handleFormEmail} type="email" placeholder="" />
               <Form.Text className={styles['modal__help-block']} id="passwordHelpBlock" muted>
                 {generateLinks()}
@@ -178,11 +223,13 @@ export default function Modal() {
         return (
           <>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Электронная почта</Form.Label>
+              <Form.Label column={true}>Электронная почта</Form.Label>
               <Form.Control value={email} onChange={handleFormEmail} type="email" placeholder="" />
             </Form.Group>
             <Form.Group>
-              <Form.Label htmlFor="inputPassword5">Пароль</Form.Label>
+              <Form.Label column={true} htmlFor="inputPassword5">
+                Пароль
+              </Form.Label>
               <Form.Control
                 value={password}
                 onChange={handleFormPassword}
