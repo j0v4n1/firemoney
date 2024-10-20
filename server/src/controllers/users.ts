@@ -11,8 +11,8 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
   }
 };
 
-export const smsCodeValidation = async (req: Request, res: Response) => {
-  const isValidNumber = await userService.smsCodeValidation(req.body);
+export const verifySmsCode = async (req: Request, res: Response) => {
+  const isValidNumber = await userService.verifySmsCode(req.body);
   if (isValidNumber) {
     return responseData(res, 'success');
   }

@@ -1,5 +1,6 @@
-type Response = {
+export type Response = {
   status: 'success' | 'failure';
+  message?: string;
 };
 
 export type UserData = {

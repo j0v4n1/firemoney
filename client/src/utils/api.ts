@@ -1,5 +1,10 @@
 import { BASE_URL } from '../constants/constants';
-import { UserDataResponse, UserData, VerificationCodeResponse } from '../types/common.types';
+import {
+  UserDataResponse,
+  UserData,
+  VerificationCodeResponse,
+  Response,
+} from '../types/common.types';
 import axios from 'axios';
 
 const axiosInstance = axios.create({
@@ -17,4 +22,4 @@ export const sendPhoneNumber = (number: string) =>
   axiosInstance.post<VerificationCodeResponse>('users/verification', { number });
 
 export const sendVerificationCode = (verificationCode: number) =>
-  axiosInstance.post('users/validation', { verificationCode });
+  axiosInstance.post<Response>('users/verify', { verificationCode });

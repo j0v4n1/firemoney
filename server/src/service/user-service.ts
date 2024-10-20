@@ -19,8 +19,8 @@ class UserService {
     return userWithoutPassword;
   }
 
-  async smsCodeValidation(verificationCode: number) {
-    const user = await UserModel.findOne({ verificationCode });
+  async verifySmsCode(verificationCode: { verificationCode: number }) {
+    const user = await UserModel.findOne(verificationCode);
     if (!user) {
       return false;
     }
