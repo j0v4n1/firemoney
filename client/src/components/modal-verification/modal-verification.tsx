@@ -1,25 +1,30 @@
 import { Form } from 'react-bootstrap';
 import styles from '../modal/modal.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ModalVerificationProps } from './modal-verification.types';
 import { ModalTypes } from '../modal/modal.types';
 
-export default function ModalVerification({ isConflict, modalType, setType }: ModalVerificationProps) {
-  const [number, setNumber] = useState('');
+export default function ModalVerification({
+  number,
+  setNumber,
+  handleFormNumber,
+  isConflict,
+  modalType,
+  setType,
+  setIsConflict,
+}: ModalVerificationProps) {
   const [verificationCode, setVerificationCode] = useState<number | null>(null);
-
-  const handleFormNumber = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    let value = event.target.value;
-    value = value.replace(/[^0-9]/g, '');
-    if (!value.startsWith('7')) {
-      value = '7' + value;
-    }
-    setNumber('+' + value);
-  };
 
   const handleFormVerificationCode = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setVerificationCode(+event.target.value);
   };
+
+  useEffect(() => {
+    return () => {
+      setNumber('');
+      setIsConflict(false);
+    };
+  }, []);
 
   return (
     <>
@@ -28,6 +33,7 @@ export default function ModalVerification({ isConflict, modalType, setType }: Mo
           {modalType === ModalTypes.VERIFICATION ? 'Номер телефона' : 'Введите код из SMS'}
         </Form.Label>
         <Form.Control
+          isInvalid={isConflict}
           className={styles['modal__form-number']}
           value={modalType === ModalTypes.VERIFICATION ? number : verificationCode ? verificationCode : ''}
           onChange={modalType === ModalTypes.VERIFICATION ? handleFormNumber : handleFormVerificationCode}

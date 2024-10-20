@@ -4,9 +4,19 @@ import Button from 'react-bootstrap/Button';
 import { Modal as ModalBootstrap } from 'react-bootstrap/';
 import { Spinner } from 'react-bootstrap/';
 import { useAppDispatch, useAppSelector } from '../../store/store.types';
-import { closeModal } from '../../store/slices/modal/modal';
+import {
+  closeModal,
+  setName,
+  setLastName,
+  setNumber,
+  setVerificationCode,
+  setEmail,
+  setPassword,
+  setRepeatPassword,
+  setIsConflict,
+  setType,
+} from '../../store/slices/modal/modal';
 import { ModalTypes } from './modal.types';
-import { useState } from 'react';
 import { sendPhoneNumber, sendVerificationCode } from '../../utils/api';
 import ModalRegister from '../modal-register/modal-register';
 import ModalVerification from '../modal-verification/modal-verification';
@@ -14,33 +24,24 @@ import ModalReset from '../modal-reset/modal-reset';
 import ModalAuthorization from '../modal-authorization/modal-authorization';
 
 export default function Modal() {
-  const { isOpened } = useAppSelector((store) => store.modal);
+  const { isOpened, type, number, verificationCode, password, isConflict, isDataSending } = useAppSelector(
+    (store) => store.modal
+  );
 
   const dispatch = useAppDispatch();
-
-  const [type, setType] = useState(ModalTypes.LOGIN);
-  const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [number, setNumber] = useState('');
-  const [verificationCode, setVerificationCode] = useState<number | null>(null);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
-  const [isDataSending, setIsDataSending] = useState(false);
-  const [isConflict, setIsConflict] = useState(false);
 
   const onClose = () => {
     dispatch(closeModal());
     setTimeout(() => {
-      setName('');
-      setLastName('');
-      setNumber('');
-      setVerificationCode(null);
-      setEmail('');
-      setPassword('');
-      setRepeatPassword('');
-      setIsConflict(false);
-      setType(ModalTypes.LOGIN);
+      dispatch(setName(''));
+      dispatch(setLastName(''));
+      dispatch(setNumber(''));
+      dispatch(setVerificationCode(null));
+      dispatch(setEmail(''));
+      dispatch(setPassword(''));
+      dispatch(setRepeatPassword(''));
+      dispatch(setIsConflict(false));
+      dispatch(setType(ModalTypes.LOGIN));
     }, 300);
   };
 
@@ -73,6 +74,7 @@ export default function Modal() {
         sendPhoneNumber(number)
           .then((data) => {
             if (data.data.status === 'failure') {
+              setIsDataSending(false);
               return setIsConflict(true);
             }
             setIsDataSending(false);
@@ -80,7 +82,10 @@ export default function Modal() {
             setNumber('');
             console.log(data.data);
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            setIsDataSending(false);
+            console.log(error);
+          });
         break;
       case ModalTypes.VERIFY:
         if (verificationCode) {
@@ -103,9 +108,29 @@ export default function Modal() {
   const generateForm = () => {
     switch (type) {
       case ModalTypes.VERIFICATION:
-        return <ModalVerification setType={setType} modalType={ModalTypes.VERIFICATION} isConflict={isConflict} />;
+        return (
+          <ModalVerification
+            setNumber={setNumber}
+            number={number}
+            handleFormNumber={handleFormNumber}
+            setType={setType}
+            modalType={ModalTypes.VERIFICATION}
+            isConflict={isConflict}
+            setIsConflict={setIsConflict}
+          />
+        );
       case ModalTypes.VERIFY:
-        return <ModalVerification setType={setType} isConflict={isConflict} modalType={ModalTypes.VERIFY} />;
+        return (
+          <ModalVerification
+            setNumber={setNumber}
+            number={number}
+            handleFormNumber={handleFormNumber}
+            setType={setType}
+            isConflict={isConflict}
+            setIsConflict={setIsConflict}
+            modalType={ModalTypes.VERIFY}
+          />
+        );
       case ModalTypes.REGISTER:
         return <ModalRegister setType={setType} />;
       case ModalTypes.RESET:
