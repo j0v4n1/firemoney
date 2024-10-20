@@ -26,65 +26,35 @@ const modal = createSlice({
     closeModal(state) {
       state.isOpened = false;
     },
-    setName(state, action: PayloadAction<React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string>) {
-      if (typeof action.payload === 'string') {
-        state.name = action.payload;
-      } else {
-        state.name = action.payload.target.value;
-      }
+    setName(state, action: PayloadAction<string>) {
+      state.name = action.payload;
     },
-    setLastName(state, action: PayloadAction<React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string>) {
-      if (typeof action.payload === 'string') {
-        state.lastName = action.payload;
-      } else {
-        state.lastName = action.payload.target.value;
-      }
+    setLastName(state, action: PayloadAction<string>) {
+      state.lastName = action.payload;
     },
-    setNumber(state, action: PayloadAction<React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string>) {
-      if (typeof action.payload === 'string') {
-        state.lastName = action.payload;
-      } else {
-        let value = action.payload.target.value;
-        value = value.replace(/[^0-9]/g, '');
-        if (!value.startsWith('7')) {
-          value = '7' + value;
-        }
-        state.number = '+' + value;
+    setNumber(state, action: PayloadAction<string>) {
+      let value = action.payload;
+      value = value.replace(/[^0-9]/g, '');
+      if (!value.startsWith('7')) {
+        value = '7' + value;
       }
+      state.number = '+' + value;
     },
-    setVerificationCode(
-      state,
-      action: PayloadAction<React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | null>
-    ) {
+    setVerificationCode(state, action: PayloadAction<number | null>) {
       if (action.payload === null) {
         state.verificationCode = null;
       } else {
-        state.verificationCode = +action.payload.target.value;
+        state.verificationCode = +action.payload;
       }
     },
-    setEmail(state, action: PayloadAction<React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string>) {
-      if (typeof action.payload === 'string') {
-        state.email = action.payload;
-      } else {
-        state.email = action.payload.target.value;
-      }
+    setEmail(state, action: PayloadAction<string>) {
+      state.email = action.payload;
     },
-    setPassword(state, action: PayloadAction<React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string>) {
-      if (typeof action.payload === 'string') {
-        state.password = action.payload;
-      } else {
-        state.password = action.payload.target.value;
-      }
+    setPassword(state, action: PayloadAction<string>) {
+      state.password = action.payload;
     },
-    setRepeatPassword(
-      state,
-      action: PayloadAction<React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string>
-    ) {
-      if (typeof action.payload === 'string') {
-        state.repeatPassword = action.payload;
-      } else {
-        state.repeatPassword = action.payload.target.value;
-      }
+    setRepeatPassword(state, action: PayloadAction<string>) {
+      state.repeatPassword = action.payload;
     },
     setIsDataSending(state, action: PayloadAction<boolean>) {
       state.isDataSending = action.payload;

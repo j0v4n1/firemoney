@@ -1,13 +1,14 @@
 import { Form } from 'react-bootstrap';
 import styles from '../modal/modal.module.css';
-import { useState } from 'react';
-import { ModalResetProps } from './modal-reset.types';
 import { ModalTypes } from '../modal/modal.types';
+import { useAppDispatch, useAppSelector } from '../../store/store.types';
+import { setEmail, setType } from '../../store/slices/modal/modal';
 
-export default function ModalReset({ setType }: ModalResetProps) {
-  const [email, setEmail] = useState('');
+export default function ModalReset() {
+  const { email } = useAppSelector((store) => store.modal);
+  const dispatch = useAppDispatch();
   const handleFormEmail = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setEmail(event.target.value);
+    dispatch(setEmail(event.target.value));
   };
   return (
     <>
@@ -19,7 +20,7 @@ export default function ModalReset({ setType }: ModalResetProps) {
             Вспомнили пароль?{' '}
             <span
               onClick={() => {
-                setType(ModalTypes.LOGIN);
+                dispatch(setType(ModalTypes.LOGIN));
               }}
               className={styles['modal__link']}>
               Войти

@@ -14,6 +14,7 @@ import {
   setPassword,
   setRepeatPassword,
   setIsConflict,
+  setIsDataSending,
   setType,
 } from '../../store/slices/modal/modal';
 import { ModalTypes } from './modal.types';
@@ -24,9 +25,7 @@ import ModalReset from '../modal-reset/modal-reset';
 import ModalAuthorization from '../modal-authorization/modal-authorization';
 
 export default function Modal() {
-  const { isOpened, type, number, verificationCode, password, isConflict, isDataSending } = useAppSelector(
-    (store) => store.modal
-  );
+  const { isOpened, type, number, verificationCode, isDataSending } = useAppSelector((store) => store.modal);
 
   const dispatch = useAppDispatch();
 
@@ -45,18 +44,6 @@ export default function Modal() {
     }, 300);
   };
 
-  const handleFormNumber = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    let value = event.target.value;
-    value = value.replace(/[^0-9]/g, '');
-    if (!value.startsWith('7')) {
-      value = '7' + value;
-    }
-    setNumber('+' + value);
-  };
-  const handleFormPassword = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setPassword(event.target.value);
-  };
-
   const generateTitle = () => {
     switch (type) {
       case ModalTypes.REGISTER:
@@ -71,19 +58,20 @@ export default function Modal() {
   const handleSendButton = (type: ModalTypes) => {
     switch (type) {
       case ModalTypes.VERIFICATION:
+        dispatch(setIsConflict(false));
         sendPhoneNumber(number)
           .then((data) => {
             if (data.data.status === 'failure') {
-              setIsDataSending(false);
-              return setIsConflict(true);
+              dispatch(setIsDataSending(false));
+              return dispatch(setIsConflict(true));
             }
-            setIsDataSending(false);
-            setType(ModalTypes.VERIFY);
-            setNumber('');
+            dispatch(setIsDataSending(false));
+            dispatch(setType(ModalTypes.VERIFY));
+            dispatch(setNumber(''));
             console.log(data.data);
           })
           .catch((error) => {
-            setIsDataSending(false);
+            dispatch(setIsDataSending(false));
             console.log(error);
           });
         break;
@@ -108,43 +96,15 @@ export default function Modal() {
   const generateForm = () => {
     switch (type) {
       case ModalTypes.VERIFICATION:
-        return (
-          <ModalVerification
-            setNumber={setNumber}
-            number={number}
-            handleFormNumber={handleFormNumber}
-            setType={setType}
-            modalType={ModalTypes.VERIFICATION}
-            isConflict={isConflict}
-            setIsConflict={setIsConflict}
-          />
-        );
+        return <ModalVerification />;
       case ModalTypes.VERIFY:
-        return (
-          <ModalVerification
-            setNumber={setNumber}
-            number={number}
-            handleFormNumber={handleFormNumber}
-            setType={setType}
-            isConflict={isConflict}
-            setIsConflict={setIsConflict}
-            modalType={ModalTypes.VERIFY}
-          />
-        );
+        return <ModalVerification />;
       case ModalTypes.REGISTER:
-        return <ModalRegister setType={setType} />;
+        return <ModalRegister />;
       case ModalTypes.RESET:
-        return <ModalReset setType={setType} />;
+        return <ModalReset />;
       default:
-        return (
-          <ModalAuthorization
-            setType={setType}
-            password={password}
-            number={number}
-            handleFormNumber={handleFormNumber}
-            handleFormPassword={handleFormPassword}
-          />
-        );
+        return <ModalAuthorization />;
     }
   };
 
@@ -165,7 +125,7 @@ export default function Modal() {
         <Button
           disabled={isDataSending}
           onClick={() => {
-            setIsDataSending(true);
+            dispatch(setIsDataSending(true));
             handleSendButton(type);
           }}
           className={commonStyles['btn-order'] + ' ' + styles['btn-order_size']}>

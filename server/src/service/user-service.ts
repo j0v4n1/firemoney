@@ -28,7 +28,6 @@ class UserService {
   }
 
   async createVerificationCode(number: { number: string }) {
-    console.log(number);
     const numberCandidate = await UserModel.findOne(number);
     if (numberCandidate) {
       throw ApiError.conflictError('Пользователь с таким номером уже существует');

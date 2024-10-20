@@ -1,47 +1,43 @@
 import { Form } from 'react-bootstrap';
 import styles from '../modal/modal.module.css';
-import { useEffect, useState } from 'react';
-import { ModalVerificationProps } from './modal-verification.types';
+import { useEffect } from 'react';
 import { ModalTypes } from '../modal/modal.types';
+import { useAppDispatch, useAppSelector } from '../../store/store.types';
+import { setNumber, setIsConflict, setType, setVerificationCode } from '../../store/slices/modal/modal';
 
-export default function ModalVerification({
-  number,
-  setNumber,
-  handleFormNumber,
-  isConflict,
-  modalType,
-  setType,
-  setIsConflict,
-}: ModalVerificationProps) {
-  const [verificationCode, setVerificationCode] = useState<number | null>(null);
-
-  const handleFormVerificationCode = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setVerificationCode(+event.target.value);
-  };
+export default function ModalVerification() {
+  const { number, verificationCode, type, isConflict } = useAppSelector((store) => store.modal);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     return () => {
-      setNumber('');
-      setIsConflict(false);
+      dispatch(setNumber(''));
+      dispatch(setIsConflict(false));
     };
   }, []);
 
+  const handleFormVerificationCode = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    dispatch(setVerificationCode(+event.target.value));
+  };
+  const handleFormNumber = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    dispatch(setNumber(event.target.value));
+  };
   return (
     <>
       <Form.Group style={{ position: 'relative' }} className="mb-3">
         <Form.Label column={true}>
-          {modalType === ModalTypes.VERIFICATION ? 'Номер телефона' : 'Введите код из SMS'}
+          {type === ModalTypes.VERIFICATION ? 'Номер телефона' : 'Введите код из SMS'}
         </Form.Label>
         <Form.Control
           isInvalid={isConflict}
           className={styles['modal__form-number']}
-          value={modalType === ModalTypes.VERIFICATION ? number : verificationCode ? verificationCode : ''}
-          onChange={modalType === ModalTypes.VERIFICATION ? handleFormNumber : handleFormVerificationCode}
+          value={type === ModalTypes.VERIFICATION ? number : verificationCode ? verificationCode : ''}
+          onChange={type === ModalTypes.VERIFICATION ? handleFormNumber : handleFormVerificationCode}
           type="text"
           placeholder=""
         />
         <Form.Text className={styles['modal__form-number-warning-text']}>
-          {modalType === ModalTypes.VERIFICATION
+          {type === ModalTypes.VERIFICATION
             ? isConflict
               ? 'Пользователь с таким номером уже существует'
               : ''
@@ -54,7 +50,7 @@ export default function ModalVerification({
             Уже зарегистрированы?{' '}
             <span
               onClick={() => {
-                setType(ModalTypes.LOGIN);
+                dispatch(setType(ModalTypes.LOGIN));
               }}
               className={styles['modal__link']}>
               Войти

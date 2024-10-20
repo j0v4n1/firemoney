@@ -1,30 +1,34 @@
-import { useState } from 'react';
 import styles from '../modal/modal.module.css';
 import { Form } from 'react-bootstrap';
-import { ModalRegisterProps } from './modal-register.types';
 import { ModalTypes } from '../modal/modal.types';
+import { useAppSelector, useAppDispatch } from '../../store/store.types';
+import {
+  setRepeatPassword,
+  setPassword,
+  setType,
+  setName,
+  setLastName,
+  setEmail,
+} from '../../store/slices/modal/modal';
 
-export default function ModalRegister({ setType }: ModalRegisterProps) {
-  const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
+export default function ModalRegister() {
+  const { name, lastName, email, password, repeatPassword } = useAppSelector((store) => store.modal);
+  const dispatch = useAppDispatch();
 
   const handleFormRepeatPassword = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setRepeatPassword(event.target.value);
+    dispatch(setRepeatPassword(event.target.value));
   };
   const handleFormPassword = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setPassword(event.target.value);
+    dispatch(setPassword(event.target.value));
   };
   const handleFormName = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setName(event.target.value);
+    dispatch(setName(event.target.value));
   };
   const handleFormLastName = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setLastName(event.target.value);
+    dispatch(setLastName(event.target.value));
   };
   const handleFormEmail = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setEmail(event.target.value);
+    dispatch(setEmail(event.target.value));
   };
 
   return (
@@ -84,7 +88,7 @@ export default function ModalRegister({ setType }: ModalRegisterProps) {
             Уже зарегистрированы?{' '}
             <span
               onClick={() => {
-                setType(ModalTypes.LOGIN);
+                dispatch(setType(ModalTypes.LOGIN));
               }}
               className={styles['modal__link']}>
               Войти
