@@ -3,18 +3,23 @@ export type Response = {
   message?: string;
 };
 
-export type UserData = {
+export type User = {
+  _id: string;
   name: string;
   lastName: string;
-  email: string;
   number: string;
+  email: string;
   password: string;
+  isActivatedEmail: boolean;
+  isActivatedNumber: boolean;
+  accessToken: string;
 };
 
 type VerificationCode = {
-  code: number;
+  verificationCode: number;
 };
 
-export type UserDataResponse = UserData & Response;
-
-export type VerificationCodeResponse = Response & VerificationCode;
+export type UserResponse = Response & { user: Omit<User, 'password'> } & {
+  refreshToken: string;
+};
+export type VerificationCodeResponse = VerificationCode & Response;

@@ -18,8 +18,8 @@ export default class ApiError extends Error {
   static serverSideError(reason: string) {
     return new ApiError(500, `Проблема на стороне сервера, причина: ${reason}`);
   }
-  static badRequestError() {
-    return new ApiError(500, `Не корректный запрос с клиента`);
+  static badRequestError(reason: string) {
+    return new ApiError(500, `Не корректный запрос с клиента, причина: ${reason}`);
   }
   static conflictError(reason: string) {
     return new ApiError(409, `Конфликт с текущим состоянием ресурса, причина: ${reason}`);

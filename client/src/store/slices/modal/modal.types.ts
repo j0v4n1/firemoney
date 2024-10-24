@@ -12,4 +12,7 @@ export type ModalState = {
   repeatPassword: string;
   isDataSending: boolean;
   isConflict: boolean;
+  isResendCodeButtonVisible: boolean;
+  isButtonDisabled: boolean;
+  timesResendCode: number;
 };

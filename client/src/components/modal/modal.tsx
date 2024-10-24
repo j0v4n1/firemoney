@@ -18,14 +18,28 @@ import {
   setType,
 } from '../../store/slices/modal/modal';
 import { ModalTypes } from './modal.types';
-import { sendPhoneNumber, sendVerificationCode } from '../../utils/api';
+import { sendPhoneNumber, sendUserData, sendVerificationCode } from '../../utils/api';
 import ModalRegister from '../modal-register/modal-register';
 import ModalVerification from '../modal-verification/modal-verification';
 import ModalReset from '../modal-reset/modal-reset';
 import ModalAuthorization from '../modal-authorization/modal-authorization';
+import { setTempNumber, setUser } from '../../store/slices/user/user';
+import { sendNumber } from '../../utils/common';
 
 export default function Modal() {
-  const { isOpened, type, number, verificationCode, isDataSending } = useAppSelector((store) => store.modal);
+  const {
+    isOpened,
+    type,
+    number,
+    verificationCode,
+    isDataSending,
+    name,
+    lastName,
+    email,
+    password,
+    isResendCodeButtonVisible,
+  } = useAppSelector((store) => store.modal);
+  const tempNumber = useAppSelector((store) => store.user.number);
 
   const dispatch = useAppDispatch();
 
@@ -40,6 +54,9 @@ export default function Modal() {
       dispatch(setPassword(''));
       dispatch(setRepeatPassword(''));
       dispatch(setIsConflict(false));
+      if (tempNumber !== '') {
+        return;
+      }
       dispatch(setType(ModalTypes.LOGIN));
     }, 300);
   };
@@ -59,34 +76,34 @@ export default function Modal() {
     switch (type) {
       case ModalTypes.VERIFICATION:
         dispatch(setIsConflict(false));
-        sendPhoneNumber(number)
-          .then((data) => {
-            if (data.data.status === 'failure') {
-              dispatch(setIsDataSending(false));
-              return dispatch(setIsConflict(true));
-            }
-            dispatch(setIsDataSending(false));
-            dispatch(setType(ModalTypes.VERIFY));
-            dispatch(setNumber(''));
-            console.log(data.data);
-          })
-          .catch((error) => {
-            dispatch(setIsDataSending(false));
-            console.log(error);
-          });
+        dispatch(setTempNumber(number));
+        sendNumber(number, dispatch, isResendCodeButtonVisible);
         break;
       case ModalTypes.VERIFY:
         if (verificationCode) {
           sendVerificationCode(verificationCode)
             .then((data) => {
-              if (data.data.status === 'failure') {
-                setIsConflict(true);
-              }
-              setIsDataSending(false);
-              setType(ModalTypes.REGISTER);
+              dispatch(setUser(data.data.user));
+              localStorage.setItem('refreshToken', data.data.refreshToken);
+              dispatch(setIsDataSending(false));
+              dispatch(setType(ModalTypes.REGISTER));
             })
-            .catch((err) => console.log(err));
+            .catch(() => {
+              dispatch(setIsDataSending(false));
+              return dispatch(setIsConflict(true));
+            });
         }
+        break;
+      case ModalTypes.REGISTER:
+        sendUserData({ name, lastName, email, number, password })
+          .then((data) => {
+            dispatch(setIsDataSending(false));
+            console.log(data);
+          })
+          .catch((err) => {
+            dispatch(setIsDataSending(false));
+            console.log(err);
+          });
         break;
       default:
         break;
@@ -118,12 +135,14 @@ export default function Modal() {
       aria-labelledby="contained-modal-title-vcenter"
       centered>
       <ModalBootstrap.Header closeButton>
-        <ModalBootstrap.Title id="contained-modal-title-vcenter">{generateTitle()}</ModalBootstrap.Title>
+        <ModalBootstrap.Title id="contained-modal-title-vcenter">
+          {generateTitle()}
+        </ModalBootstrap.Title>
       </ModalBootstrap.Header>
       <ModalBootstrap.Body>{generateForm()}</ModalBootstrap.Body>
       <ModalBootstrap.Footer>
         <Button
-          disabled={isDataSending}
+          disabled={isDataSending || (!verificationCode && type === ModalTypes.VERIFY)}
           onClick={() => {
             dispatch(setIsDataSending(true));
             handleSendButton(type);

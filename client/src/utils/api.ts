@@ -1,10 +1,5 @@
 import { BASE_URL } from '../constants/constants';
-import {
-  UserDataResponse,
-  UserData,
-  VerificationCodeResponse,
-  Response,
-} from '../types/common.types';
+import { UserResponse, User, VerificationCodeResponse } from '../types/common.types';
 import axios from 'axios';
 
 const axiosInstance = axios.create({
@@ -15,11 +10,11 @@ const axiosInstance = axios.create({
   },
 });
 
-export const sendUserData = (userData: UserData) =>
-  axiosInstance.post<UserDataResponse>('users/register', userData);
+export const sendUserData = (userData: Omit<User, '_id' | 'isActivatedEmail' | 'accessToken' | 'isActivatedNumber'>) =>
+  axiosInstance.post<UserResponse>('users/register', userData);
 
 export const sendPhoneNumber = (number: string) =>
   axiosInstance.post<VerificationCodeResponse>('users/verification', { number });
 
 export const sendVerificationCode = (verificationCode: number) =>
-  axiosInstance.post<Response>('users/verify', { verificationCode });
+  axiosInstance.post<UserResponse>('users/verify', { verificationCode });

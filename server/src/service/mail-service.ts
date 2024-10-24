@@ -1,13 +1,12 @@
 import nodemailer from 'nodemailer';
 import 'dotenv/config';
-import * as process from 'node:process';
 
 class MailService {
   transporter;
   constructor() {
     this.transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
-      port: 587,
+      port: process.env.SMTP_PORT ? +process.env.SMTP_PORT : 587,
       secure: false,
       auth: {
         user: process.env.SMTP_USER,

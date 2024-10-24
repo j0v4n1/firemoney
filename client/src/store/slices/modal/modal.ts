@@ -14,6 +14,9 @@ const initialState: ModalState = {
   repeatPassword: '',
   isDataSending: false,
   isConflict: false,
+  isResendCodeButtonVisible: false,
+  isButtonDisabled: false,
+  timesResendCode: 0,
 };
 
 const modal = createSlice({
@@ -65,6 +68,15 @@ const modal = createSlice({
     setType(state, action: PayloadAction<ModalTypes>) {
       state.type = action.payload;
     },
+    setIsResendCodeVisible(state, action: PayloadAction<boolean>) {
+      state.isResendCodeButtonVisible = action.payload;
+    },
+    setIsButtonDisabled(state, action: PayloadAction<boolean>) {
+      state.isButtonDisabled = action.payload;
+    },
+    setTimesResendCode(state, action: PayloadAction<number>) {
+      state.timesResendCode = action.payload;
+    },
   },
 });
 
@@ -81,5 +93,9 @@ export const {
   setRepeatPassword,
   setVerificationCode,
   setType,
+  setIsResendCodeVisible,
+  setIsButtonDisabled,
+
+  setTimesResendCode,
 } = modal.actions;
 export default modal.reducer;

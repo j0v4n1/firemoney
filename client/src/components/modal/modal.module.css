@@ -31,6 +31,12 @@
   text-decoration: underline;
 }
 
+.modal__link_disabled {
+  cursor: default;
+  color: #c0c2c5;
+  text-decoration: none;
+}
+
 input[type='number']::-webkit-outer-spin-button,
 input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;

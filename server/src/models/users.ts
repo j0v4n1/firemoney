@@ -6,9 +6,11 @@ export type User = {
   email: string;
   number: string;
   password: string;
-  isActivated: boolean;
+  isActivatedEmail: boolean;
+  isActivatedNumber: boolean;
   activationLink: string;
   verificationCode: number;
+  createdAt: Date;
 };
 
 const UserSchema = new Schema<User>({
@@ -34,7 +36,11 @@ const UserSchema = new Schema<User>({
     type: String,
     required: true,
   },
-  isActivated: {
+  isActivatedEmail: {
+    type: Boolean,
+    default: false,
+  },
+  isActivatedNumber: {
     type: Boolean,
     default: false,
   },
@@ -43,6 +49,11 @@ const UserSchema = new Schema<User>({
   },
   verificationCode: {
     type: Number,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    expires: 10,
   },
 });
 

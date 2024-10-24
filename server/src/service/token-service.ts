@@ -4,9 +4,10 @@ import { Types } from 'mongoose';
 import tokenModel from '../models/token';
 import Token from '../models/token';
 import ApiError from '../errors/api-error';
+import { UserData } from '../types/common';
 
 class TokenService {
-  generateTokens(payload: { id: string; name: string; email: string }) {
+  generateTokens(payload: UserData) {
     if (!process.env.JWT_SECRET) {
       throw ApiError.serverSideError('секретный ключ');
     }
