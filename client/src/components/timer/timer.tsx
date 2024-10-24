@@ -10,7 +10,6 @@ export default function Timer() {
   const dispatch = useAppDispatch();
   const seconds = useAppSelector((state) => state.timer.seconds);
   const isTimerRunning = useAppSelector((state) => state.timer.isTimerRunning);
-
   const isButtonDisabled = useAppSelector((state) => state.modal.isButtonDisabled);
   const timesResendCode = useAppSelector((state) => state.modal.timesResendCode);
 

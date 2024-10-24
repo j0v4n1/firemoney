@@ -19,9 +19,7 @@ export default function ModalVerification() {
     (store) => store.modal
   );
   const tempNumber = useAppSelector((store) => store.user.number);
-  const { isDataSending, timesResendCode, isButtonDisabled } = useAppSelector(
-    (store) => store.modal
-  );
+  const { isDataSending, isButtonDisabled } = useAppSelector((store) => store.modal);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
