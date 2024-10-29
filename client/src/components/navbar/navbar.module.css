@@ -11,6 +11,10 @@
   margin-bottom: 38px;
 }
 
+.navbar_dashboard {
+  margin-bottom: 0;
+}
+
 .nav-menu {
   width: 100%;
   max-width: 473px;
@@ -51,6 +55,10 @@
   border: none;
   background-color: #ff7b00;
   transition: 0.5s;
+}
+
+.nav-menu__button_underline {
+  text-decoration: none;
 }
 
 .nav-menu__button:hover {

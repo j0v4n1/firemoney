@@ -14,18 +14,22 @@ import GetMoney from '../get-money/get-money';
 import { useEffect, useState } from 'react';
 import { getUserData } from '../../utils/api';
 import { Spinner } from 'react-bootstrap/';
-import { setUser } from '../../store/slices/user/user';
+import { setIsAuthorizedUser, setUser } from '../../store/slices/user/user';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useAppDispatch } from '../../store/store.types';
+import UserDashboard from '../user-dashboard/user-dashboard';
 
 export default function App() {
   const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setLoading(true);
     getUserData()
       .then((data) => {
         setLoading(false);
-        setUser(data.data.user);
-        console.log(data.data.user);
+        dispatch(setUser(data.data.user));
+        dispatch(setIsAuthorizedUser(true));
       })
       .catch((error) => {
         setLoading(false);
@@ -36,20 +40,40 @@ export default function App() {
   return loading ? (
     <Spinner style={{ margin: 'auto' }} />
   ) : (
-    <>
-      <Header type={NavbarType.MAIN} />
-      <main>
-        <Offers />
-        <MoneyGuide />
-        <ReceivingMethods />
-        <ReasonsToChoose />
-        <OurClients />
-        <OurServices />
-        <Faq />
-        <GetMoney />
-      </main>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path={'/'}
+          element={
+            <>
+              <Header type={NavbarType.MAIN} />
+              <main>
+                <Offers />
+                <MoneyGuide />
+                <ReceivingMethods />
+                <ReasonsToChoose />
+                <OurClients />
+                <OurServices />
+                <Faq />
+                <GetMoney />
+              </main>
+            </>
+          }
+        />
+        <Route
+          path={'dashboard'}
+          element={
+            <>
+              <Header type={NavbarType.DASHBOARD} />
+              <main>
+                <UserDashboard />
+              </main>
+            </>
+          }
+        />
+      </Routes>
       <Footer />
       <Modal />
-    </>
+    </BrowserRouter>
   );
 }

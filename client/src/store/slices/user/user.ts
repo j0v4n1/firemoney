@@ -9,6 +9,7 @@ const initialState = {
   number: '',
   isActivatedNumber: false,
   isActivatedEmail: false,
+  isAuthorizedUser: false,
   accessToken: '',
 };
 
@@ -29,8 +30,11 @@ const user = createSlice({
     setTempNumber: (state, action: PayloadAction<string>) => {
       state.number = action.payload;
     },
+    setIsAuthorizedUser: (state, action: PayloadAction<boolean>) => {
+      state.isAuthorizedUser = action.payload;
+    },
   },
 });
 
-export const { setUser, setTempNumber } = user.actions;
+export const { setUser, setTempNumber, setIsAuthorizedUser } = user.actions;
 export default user.reducer;

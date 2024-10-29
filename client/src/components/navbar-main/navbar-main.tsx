@@ -1,11 +1,13 @@
 import { NavbarPosition, NavbarProps } from '../navbar/navbar.types';
 import styles from '../navbar/navbar.module.css';
-import { useAppDispatch } from '../../store/store.types';
+import { useAppDispatch, useAppSelector } from '../../store/store.types';
 import { openModal } from '../../store/slices/modal/modal';
+import { NavLink } from 'react-router-dom';
 
 export default function NavbarMain({ position }: NavbarProps) {
   const dispatch = useAppDispatch();
   const onOpen = () => dispatch(openModal());
+  const { isAuthorizedUser, name, lastName } = useAppSelector((state) => state.user);
 
   return (
     <div
@@ -38,9 +40,18 @@ export default function NavbarMain({ position }: NavbarProps) {
         </ul>
       </nav>
       {position === NavbarPosition.HEADER ? (
-        <button onClick={onOpen} type="button" className={styles['nav-menu__button']}>
-          вход в личный кабинет
-        </button>
+        isAuthorizedUser ? (
+          <NavLink
+            to={'/dashboard'}
+            type="button"
+            className={`${styles['nav-menu__button']} ${styles['nav-menu__button_underline']}`}>
+            {`${name} ${lastName}`}
+          </NavLink>
+        ) : (
+          <button onClick={onOpen} type="button" className={styles['nav-menu__button']}>
+            вход в личный кабинет
+          </button>
+        )
       ) : (
         <div className={styles['nav-menu__contacts']}>
           <span className={styles['nav-menu__email']}>Kustohelp@gmail.com</span>

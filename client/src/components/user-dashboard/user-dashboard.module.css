@@ -1,4 +1,63 @@
 .dashboard {
+  padding: 56px 0 56px;
+  background-color: #f6f9fc;
   display: flex;
   flex-direction: column;
+}
+.dashboard__title {
+  padding: 0 0 56px;
+  text-align: center;
+}
+
+.dashboard__personal-info {
+  gap: 40px;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1280px;
+}
+
+.dashboard__img-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 300px;
+}
+
+.dashboard__form-container {
+  width: 100%;
+  max-width: 450px;
+}
+
+.dashboard__subscribes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 450px;
+}
+
+.dashboard__img {
+  width: 100%;
+  display: block;
+}
+
+.dashboard__btn {
+  padding: 11px 22px;
+}
+
+.dashboard__checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard__checkbox-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
