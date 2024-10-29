@@ -6,4 +6,5 @@ export type UserData = {
   lastName: string;
   email: string;
   number: string;
+  password: string;
 };

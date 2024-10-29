@@ -3,6 +3,12 @@ export const enum NavbarPosition {
   FOOTER = 'footer',
 }
 
+export const enum NavbarType {
+  MAIN = 'main',
+  DASHBOARD = 'dashboard',
+}
+
 export type NavbarProps = {
   position: NavbarPosition;
+  type?: NavbarType;
 };

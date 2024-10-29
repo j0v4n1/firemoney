@@ -1,14 +1,7 @@
 import { Request } from 'express';
-import { JwtPayload } from 'jsonwebtoken';
+import { UserData } from '../common';
 
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-  passport: string;
-  iat: number;
-  exp: number;
-};
+export type User = Omit<UserData, 'password'>;
 
 export interface ExtendedRequest extends Request {
   user: User;

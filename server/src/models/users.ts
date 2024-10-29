@@ -10,7 +10,7 @@ export type User = {
   isActivatedNumber: boolean;
   activationLink: string;
   verificationCode: number;
-  createdAt: Date;
+  createdAt: Date | undefined;
 };
 
 const UserSchema = new Schema<User>({
@@ -53,7 +53,7 @@ const UserSchema = new Schema<User>({
   createdAt: {
     type: Date,
     default: Date.now,
-    expires: 10,
+    expires: 300,
   },
 });
 

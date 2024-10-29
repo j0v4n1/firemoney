@@ -7,7 +7,7 @@ import ApiError from '../errors/api-error';
 import { UserData } from '../types/common';
 
 class TokenService {
-  generateTokens(payload: UserData) {
+  generateTokens(payload: Omit<UserData, 'password'>) {
     if (!process.env.JWT_SECRET) {
       throw ApiError.serverSideError('секретный ключ');
     }

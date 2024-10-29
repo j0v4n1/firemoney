@@ -1,7 +1,7 @@
 import Navbar from '../navbar/navbar';
 import styles from './footer.module.css';
 import commonStyles from '../../styles/common.module.css';
-import { NavbarPosition } from '../navbar/navbar.types';
+import { NavbarPosition, NavbarType } from '../navbar/navbar.types';
 import wallet from '../../images/wallet_footer.png';
 import mastercard from '../../images/mastercard_footer.png';
 import mir from '../../images/mir.png';
@@ -12,7 +12,7 @@ import facebook from '../../images/facebook.svg';
 export default function Footer() {
   return (
     <footer className={styles['footer']}>
-      <Navbar position={NavbarPosition.FOOTER} />
+      <Navbar position={NavbarPosition.FOOTER} type={NavbarType.MAIN} />
       <div className={commonStyles['line'] + ' ' + styles['line_color']}></div>
       <article className={styles['footer__article']}>
         <h3 className={styles['footer__article-title']}>Список кредиторов</h3>

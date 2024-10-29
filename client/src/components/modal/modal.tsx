@@ -18,7 +18,7 @@ import {
   setType,
 } from '../../store/slices/modal/modal';
 import { ModalTypes } from './modal.types';
-import { sendPhoneNumber, sendUserData, sendVerificationCode } from '../../utils/api';
+import { sendUserData, sendVerificationCode } from '../../utils/api';
 import ModalRegister from '../modal-register/modal-register';
 import ModalVerification from '../modal-verification/modal-verification';
 import ModalReset from '../modal-reset/modal-reset';
@@ -95,14 +95,16 @@ export default function Modal() {
         }
         break;
       case ModalTypes.REGISTER:
-        sendUserData({ name, lastName, email, number, password })
+        sendUserData({ name, lastName, email, number: tempNumber, password })
           .then((data) => {
+            dispatch(setUser(data.data.user));
             dispatch(setIsDataSending(false));
-            console.log(data);
+            onClose();
           })
           .catch((err) => {
             dispatch(setIsDataSending(false));
             console.log(err);
+            onClose();
           });
         break;
       default:

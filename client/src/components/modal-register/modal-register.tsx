@@ -10,12 +10,17 @@ import {
   setLastName,
   setEmail,
 } from '../../store/slices/modal/modal';
+import React from 'react';
 
 export default function ModalRegister() {
-  const { name, lastName, email, password, repeatPassword } = useAppSelector((store) => store.modal);
+  const { name, lastName, email, password, repeatPassword } = useAppSelector(
+    (store) => store.modal
+  );
   const dispatch = useAppDispatch();
 
-  const handleFormRepeatPassword = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleFormRepeatPassword = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     dispatch(setRepeatPassword(event.target.value));
   };
   const handleFormPassword = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

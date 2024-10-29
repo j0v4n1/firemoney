@@ -10,8 +10,11 @@ const axiosInstance = axios.create({
   },
 });
 
-export const sendUserData = (userData: Omit<User, '_id' | 'isActivatedEmail' | 'accessToken' | 'isActivatedNumber'>) =>
-  axiosInstance.post<UserResponse>('users/register', userData);
+export const sendUserData = (
+  userData: Omit<User, '_id' | 'isActivatedEmail' | 'accessToken' | 'isActivatedNumber'>
+) => axiosInstance.post<UserResponse>('users/register', userData);
+
+export const getUserData = () => axiosInstance.get<UserResponse>('users/auth');
 
 export const sendPhoneNumber = (number: string) =>
   axiosInstance.post<VerificationCodeResponse>('users/verification', { number });
