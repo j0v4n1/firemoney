@@ -19,7 +19,7 @@ export default function ModalVerification() {
     (store) => store.modal
   );
   const tempNumber = useAppSelector((store) => store.user.number);
-  const { isDataSending, isButtonDisabled } = useAppSelector((store) => store.modal);
+  const { isSendingRequest, isButtonDisabled } = useAppSelector((store) => store.modal);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function ModalVerification() {
   }, []);
 
   const handleResendCode = () => {
-    if (isButtonDisabled || isDataSending) {
+    if (isButtonDisabled || isSendingRequest) {
       return;
     }
     dispatch((dispatch, getState) => {
@@ -93,7 +93,7 @@ export default function ModalVerification() {
               <span
                 onClick={handleResendCode}
                 className={
-                  isButtonDisabled || isDataSending
+                  isButtonDisabled || isSendingRequest
                     ? `${styles['modal__link']} ${styles['modal__link_disabled']}`
                     : styles['modal__link']
                 }>

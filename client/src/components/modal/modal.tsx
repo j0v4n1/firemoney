@@ -14,7 +14,7 @@ import {
   setPassword,
   setRepeatPassword,
   setIsConflict,
-  setIsDataSending,
+  setIsSendingRequest,
   setType,
 } from '../../store/slices/modal/modal';
 import { ModalTypes } from './modal.types';
@@ -25,6 +25,7 @@ import ModalReset from '../modal-reset/modal-reset';
 import ModalAuthorization from '../modal-authorization/modal-authorization';
 import { setIsAuthorizedUser, setTempNumber, setUser } from '../../store/slices/user/user';
 import { sendNumber } from '../../utils/common';
+import ModalInformation from '../modal-information/modal-information';
 
 export default function Modal() {
   const {
@@ -32,7 +33,7 @@ export default function Modal() {
     type,
     number,
     verificationCode,
-    isDataSending,
+    isSendingRequest,
     name,
     lastName,
     email,
@@ -67,6 +68,8 @@ export default function Modal() {
         return 'Регистрация';
       case ModalTypes.RESET:
         return 'Восстановление пароля';
+      case ModalTypes.INFORMATION:
+        return 'Подтвердите E-mail';
       default:
         return 'Вход в личный кабинет';
     }
@@ -85,11 +88,11 @@ export default function Modal() {
             .then((data) => {
               dispatch(setUser(data.data.user));
               localStorage.setItem('refreshToken', data.data.refreshToken);
-              dispatch(setIsDataSending(false));
+              dispatch(setIsSendingRequest(false));
               dispatch(setType(ModalTypes.REGISTER));
             })
             .catch(() => {
-              dispatch(setIsDataSending(false));
+              dispatch(setIsSendingRequest(false));
               return dispatch(setIsConflict(true));
             });
         }
@@ -98,15 +101,18 @@ export default function Modal() {
         sendUserData({ name, lastName, email, number: tempNumber, password })
           .then((data) => {
             dispatch(setUser(data.data.user));
-            dispatch(setIsDataSending(false));
+            dispatch(setIsSendingRequest(false));
             dispatch(setIsAuthorizedUser(true));
             onClose();
           })
           .catch((err) => {
-            dispatch(setIsDataSending(false));
+            dispatch(setIsSendingRequest(false));
             console.log(err);
             onClose();
           });
+        break;
+      case ModalTypes.INFORMATION:
+        dispatch(closeModal());
         break;
       default:
         break;
@@ -123,6 +129,8 @@ export default function Modal() {
         return <ModalRegister />;
       case ModalTypes.RESET:
         return <ModalReset />;
+      case ModalTypes.INFORMATION:
+        return <ModalInformation />;
       default:
         return <ModalAuthorization />;
     }
@@ -145,13 +153,21 @@ export default function Modal() {
       <ModalBootstrap.Body>{generateForm()}</ModalBootstrap.Body>
       <ModalBootstrap.Footer>
         <Button
-          disabled={isDataSending || (!verificationCode && type === ModalTypes.VERIFY)}
+          disabled={isSendingRequest || (!verificationCode && type === ModalTypes.VERIFY)}
           onClick={() => {
-            dispatch(setIsDataSending(true));
+            if (type !== ModalTypes.INFORMATION) {
+              dispatch(setIsSendingRequest(true));
+            }
             handleSendButton(type);
           }}
           className={commonStyles['btn-order'] + ' ' + styles['btn-order_size']}>
-          {isDataSending ? <Spinner size="sm" /> : 'Отправить'}
+          {isSendingRequest ? (
+            <Spinner size="sm" />
+          ) : type === ModalTypes.INFORMATION ? (
+            'Ок'
+          ) : (
+            'Отправить'
+          )}
         </Button>
       </ModalBootstrap.Footer>
     </ModalBootstrap>

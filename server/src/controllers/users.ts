@@ -61,6 +61,12 @@ export const sendActivationLink = async (req: Request, res: Response, next: Next
   }
 };
 
-// export const activateEmail = async (req: Request, res: Response, next: NextFunction) => {
-//   await userService.activateEmail(req.params);
-// };
+export const activateEmail = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    console.log(req.params.link);
+    await userService.activateEmail(req.params.link);
+    return res.redirect('http://localhost:3000/dashboard');
+  } catch (err) {
+    next(err);
+  }
+};

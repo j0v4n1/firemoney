@@ -2,7 +2,7 @@ import { Dispatch } from '@reduxjs/toolkit';
 import { ModalTypes } from '../components/modal/modal.types';
 import {
   setIsConflict,
-  setIsDataSending,
+  setIsSendingRequest,
   setNumber,
   setType,
   setIsResendCodeVisible,
@@ -13,10 +13,10 @@ export const sendNumber = (number: string, dispatch: Dispatch, isCodeVisible: bo
   sendPhoneNumber(number)
     .then((data) => {
       if (data.data.status === 'failure') {
-        dispatch(setIsDataSending(false));
+        dispatch(setIsSendingRequest(false));
         return dispatch(setIsConflict(true));
       }
-      dispatch(setIsDataSending(false));
+      dispatch(setIsSendingRequest(false));
       dispatch(setType(ModalTypes.VERIFY));
       dispatch(setNumber(''));
       console.log(data.data.verificationCode);
@@ -28,7 +28,7 @@ export const sendNumber = (number: string, dispatch: Dispatch, isCodeVisible: bo
       }, 10000);
     })
     .catch((error) => {
-      dispatch(setIsDataSending(false));
+      dispatch(setIsSendingRequest(false));
       console.log(error);
     });
 };

@@ -8,7 +8,9 @@ import mailService from './mail-service';
 import { UserData } from '../types/common';
 import { UserDto } from '../dto/user-dto';
 import { Types } from 'mongoose';
-import * as process from 'node:process';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 class UserService {
   async register(user: Omit<UserData, 'id'>) {
@@ -104,10 +106,11 @@ class UserService {
     }
     const activationLink = uuidv4();
     user.activationLink = activationLink;
+    user.createdAt = undefined;
     await user.save();
     await mailService.sendActivationMail(
       email,
-      `${process.env.API_URL}/activate/${activationLink}`
+      `${process.env.API_URL}/api/users/activate/${activationLink}`
     );
   }
 
@@ -117,8 +120,8 @@ class UserService {
       throw ApiError.notFoundError('Пользователь не найден');
     }
     user.isActivatedEmail = true;
+    user.createdAt = undefined;
     await user.save();
-    return { isActivatedEmail: user.isActivatedEmail };
   }
 }
 

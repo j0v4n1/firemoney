@@ -12,7 +12,7 @@ const initialState: ModalState = {
   email: '',
   password: '',
   repeatPassword: '',
-  isDataSending: false,
+  isSendingRequest: false,
   isConflict: false,
   isResendCodeButtonVisible: false,
   isButtonDisabled: false,
@@ -59,8 +59,8 @@ const modal = createSlice({
     setRepeatPassword(state, action: PayloadAction<string>) {
       state.repeatPassword = action.payload;
     },
-    setIsDataSending(state, action: PayloadAction<boolean>) {
-      state.isDataSending = action.payload;
+    setIsSendingRequest(state, action: PayloadAction<boolean>) {
+      state.isSendingRequest = action.payload;
     },
     setIsConflict(state, action: PayloadAction<boolean>) {
       state.isConflict = action.payload;
@@ -85,7 +85,7 @@ export const {
   closeModal,
   setEmail,
   setIsConflict,
-  setIsDataSending,
+  setIsSendingRequest,
   setLastName,
   setName,
   setNumber,

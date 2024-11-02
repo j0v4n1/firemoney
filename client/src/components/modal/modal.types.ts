@@ -4,6 +4,7 @@ export enum ModalTypes {
   RESET = 'reset',
   VERIFICATION = 'verification',
   VERIFY = 'verify',
+  INFORMATION = 'information',
 }
 
 export type ModalProps = {

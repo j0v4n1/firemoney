@@ -42,12 +42,11 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    let point = '.';
     let animation: NodeJS.Timeout | null = setInterval(() => {
       if (loadingAnimation === '...') {
         setLoadingAnimation('.');
       } else {
-        setLoadingAnimation((prev) => prev + point);
+        setLoadingAnimation((prev) => prev + '.');
       }
     }, 1000);
     return () => {
