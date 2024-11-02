@@ -8,6 +8,7 @@ import mailService from './mail-service';
 import { UserData } from '../types/common';
 import { UserDto } from '../dto/user-dto';
 import { Types } from 'mongoose';
+import * as process from 'node:process';
 
 class UserService {
   async register(user: Omit<UserData, 'id'>) {
@@ -21,16 +22,13 @@ class UserService {
       throw ApiError.serverSideError('ошибка при создание пользователя');
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const activationLink = uuidv4();
     newUSer.name = user.name;
     newUSer.lastName = user.lastName;
     newUSer.email = user.email;
     newUSer.password = hashedPassword;
-    newUSer.activationLink = activationLink;
     newUSer.createdAt = undefined;
     await newUSer.save();
     const userDto = new UserDto(newUSer);
-    await mailService.sendActivationMail(email, activationLink);
     return { user: userDto };
   }
 
@@ -97,6 +95,30 @@ class UserService {
       user: { ...userDto, accessToken: tokens.accessToken },
       refreshToken: tokens.refreshToken,
     };
+  }
+
+  async sendActivationLink(email: string) {
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      throw ApiError.notFoundError('Пользователь не найден');
+    }
+    const activationLink = uuidv4();
+    user.activationLink = activationLink;
+    await user.save();
+    await mailService.sendActivationMail(
+      email,
+      `${process.env.API_URL}/activate/${activationLink}`
+    );
+  }
+
+  async activateEmail(activationLink: string) {
+    const user = await UserModel.findOne({ activationLink });
+    if (!user) {
+      throw ApiError.notFoundError('Пользователь не найден');
+    }
+    user.isActivatedEmail = true;
+    await user.save();
+    return { isActivatedEmail: user.isActivatedEmail };
   }
 }
 

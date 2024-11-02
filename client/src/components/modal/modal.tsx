@@ -23,7 +23,7 @@ import ModalRegister from '../modal-register/modal-register';
 import ModalVerification from '../modal-verification/modal-verification';
 import ModalReset from '../modal-reset/modal-reset';
 import ModalAuthorization from '../modal-authorization/modal-authorization';
-import { setTempNumber, setUser } from '../../store/slices/user/user';
+import { setIsAuthorizedUser, setTempNumber, setUser } from '../../store/slices/user/user';
 import { sendNumber } from '../../utils/common';
 
 export default function Modal() {
@@ -99,6 +99,7 @@ export default function Modal() {
           .then((data) => {
             dispatch(setUser(data.data.user));
             dispatch(setIsDataSending(false));
+            dispatch(setIsAuthorizedUser(true));
             onClose();
           })
           .catch((err) => {

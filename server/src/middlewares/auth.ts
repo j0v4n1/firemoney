@@ -9,7 +9,7 @@ dotenv.config();
 export default (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    return next();
+    return responseData(res, 'failure', '', 10000);
   }
   const token = authorization.replace('Bearer ', '');
   let payload: string | JwtPayload | User;

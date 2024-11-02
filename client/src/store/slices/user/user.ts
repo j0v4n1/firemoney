@@ -11,6 +11,8 @@ const initialState = {
   isActivatedEmail: false,
   isAuthorizedUser: false,
   accessToken: '',
+  isLoggingOut: false,
+  isSendingRequest: false,
 };
 
 const user = createSlice({
@@ -33,8 +35,15 @@ const user = createSlice({
     setIsAuthorizedUser: (state, action: PayloadAction<boolean>) => {
       state.isAuthorizedUser = action.payload;
     },
+    setIsLoggingOut: (state, action: PayloadAction<boolean>) => {
+      state.isLoggingOut = action.payload;
+    },
+    setIsSendingRequest: (state, action: PayloadAction<boolean>) => {
+      state.isSendingRequest = action.payload;
+    },
   },
 });
 
-export const { setUser, setTempNumber, setIsAuthorizedUser } = user.actions;
+export const { setUser, setTempNumber, setIsAuthorizedUser, setIsLoggingOut, setIsSendingRequest } =
+  user.actions;
 export default user.reducer;

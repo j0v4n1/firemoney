@@ -32,3 +32,16 @@ export const sendNumber = (number: string, dispatch: Dispatch, isCodeVisible: bo
       console.log(error);
     });
 };
+
+export const toggleLockScroll = (scrollState: 'lock' | 'unlock') => {
+  const widthWithScrollbar = window.innerWidth;
+  const widthWithoutScrollbar = document.documentElement.clientWidth;
+  const scrollBarWidth = widthWithScrollbar - widthWithoutScrollbar;
+  if (scrollState === 'lock') {
+    document.body.style.paddingRight = `${scrollBarWidth}px`;
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.paddingRight = '0';
+    document.body.style.overflow = '';
+  }
+};

@@ -21,3 +21,6 @@ export const sendPhoneNumber = (number: string) =>
 
 export const sendVerificationCode = (verificationCode: number) =>
   axiosInstance.post<UserResponse>('users/verify', { verificationCode });
+
+export const sendEmailForActivation = (email: string) =>
+  axiosInstance.post('users/activation', { email });

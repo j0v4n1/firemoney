@@ -11,17 +11,21 @@ import OurClients from '../our-clients/our-clients';
 import OurServices from '../our-services/our-services';
 import Faq from '../faq/faq';
 import GetMoney from '../get-money/get-money';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getUserData } from '../../utils/api';
 import { Spinner } from 'react-bootstrap/';
 import { setIsAuthorizedUser, setUser } from '../../store/slices/user/user';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useAppDispatch } from '../../store/store.types';
+import { useAppDispatch, useAppSelector } from '../../store/store.types';
 import UserDashboard from '../user-dashboard/user-dashboard';
+import styles from './app.module.css';
+import commonStyles from '../../styles/common.module.css';
 
 export default function App() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const { isLoggingOut } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
+  const [loadingAnimation, setLoadingAnimation] = useState('');
 
   useEffect(() => {
     setLoading(true);
@@ -37,10 +41,34 @@ export default function App() {
       });
   }, []);
 
+  useEffect(() => {
+    let point = '.';
+    let animation: NodeJS.Timeout | null = setInterval(() => {
+      if (loadingAnimation === '...') {
+        setLoadingAnimation('.');
+      } else {
+        setLoadingAnimation((prev) => prev + point);
+      }
+    }, 1000);
+    return () => {
+      animation && clearInterval(animation);
+      animation = null;
+    };
+  }, [loadingAnimation]);
+
   return loading ? (
-    <Spinner style={{ margin: 'auto' }} />
+    <div className={styles['loading-wrapper']}>
+      <h1 className={commonStyles['section-title']}>
+        Подождите идёт загрузка<span className={styles['point-animation']}>{loadingAnimation}</span>
+      </h1>
+    </div>
   ) : (
     <BrowserRouter>
+      {isLoggingOut ? (
+        <div className={styles['wrapper']}>
+          <Spinner />
+        </div>
+      ) : null}
       <Routes>
         <Route
           path={'/'}

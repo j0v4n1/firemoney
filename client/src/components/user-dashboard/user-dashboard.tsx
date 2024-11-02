@@ -1,12 +1,38 @@
 import styles from './user-dashboard.module.css';
 import commonStyles from '../../styles/common.module.css';
 import { Form } from 'react-bootstrap';
-import React from 'react';
-import { useAppSelector } from '../../store/store.types';
+import { useAppDispatch, useAppSelector } from '../../store/store.types';
 import avatar from '../../images/ava.png';
+import Button from 'react-bootstrap/Button';
+import { toggleLockScroll } from '../../utils/common';
+import { setIsLoggingOut, setIsSendingRequest } from '../../store/slices/user/user';
+import { sendEmailForActivation } from '../../utils/api';
+import { openModal } from '../../store/slices/modal/modal';
+import { Spinner } from 'react-bootstrap/';
 
 export default function UserDashboard() {
-  const { name, lastName, email, number } = useAppSelector((state) => state.user);
+  const { name, lastName, email, number, isActivatedEmail, isSendingRequest } = useAppSelector(
+    (state) => state.user
+  );
+  const dispatch = useAppDispatch();
+
+  const handleButton = (button: 'logout' | 'confirm') => {
+    if (button === 'logout') {
+      dispatch(setIsLoggingOut(true));
+      toggleLockScroll('lock');
+      setTimeout(() => {
+        dispatch(setIsLoggingOut(false));
+        toggleLockScroll('unlock');
+      }, 3000);
+    } else {
+      dispatch(setIsSendingRequest(true));
+      sendEmailForActivation(email).then(() => {
+        dispatch(setIsSendingRequest(false));
+        dispatch(openModal());
+      });
+    }
+  };
+
   return (
     <section className={styles['dashboard']}>
       <div className={styles['dashboard__personal-info']}>
@@ -30,7 +56,23 @@ export default function UserDashboard() {
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label column={true}>E-mail</Form.Label>
-            <Form.Control disabled type="text" value={email} placeholder="" />
+            <Form.Control
+              isInvalid={!isActivatedEmail}
+              disabled
+              type="text"
+              value={email}
+              placeholder=""
+            />
+            {isActivatedEmail ? null : (
+              <Form.Floating style={{ color: 'red' }}>Почта не подверждена</Form.Floating>
+            )}
+            <Button
+              onClick={() => {
+                handleButton('confirm');
+              }}
+              className={`${commonStyles['btn-order']} ${styles['dashboard__btn']}`}>
+              {isSendingRequest ? <Spinner /> : 'Подтвердить'}
+            </Button>
           </Form.Group>
           <Form.Group>
             <Form.Label column={true}>Номер телефона</Form.Label>
@@ -48,7 +90,11 @@ export default function UserDashboard() {
                 Сообщать о бонусах, акциях и новых продуктах
               </Form.Label>
             </div>
-            <button className={`${commonStyles['btn-order']} ${styles['dashboard__btn']}`}>
+            <button
+              onClick={() => {
+                handleButton('logout');
+              }}
+              className={`${commonStyles['btn-order']} ${styles['dashboard__btn']}`}>
               Выйти
             </button>
           </Form.Group>

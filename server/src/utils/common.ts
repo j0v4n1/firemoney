@@ -1,8 +1,13 @@
 import { Response } from 'express';
-export const responseData = (res: Response, status: 'success' | 'failure', data?: {}) => {
+export const responseData = (
+  res: Response,
+  status: 'success' | 'failure',
+  data?: {},
+  ms = 3000
+) => {
   setTimeout(() => {
     res.json({ status, ...data });
-  }, 3000);
+  }, ms);
 };
 
 export const createVerificationCode = () => {

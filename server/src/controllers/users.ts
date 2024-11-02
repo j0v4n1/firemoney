@@ -51,3 +51,16 @@ export const authenticate = async (req: ExtendedRequest, res: Response, next: Ne
     next(err);
   }
 };
+
+export const sendActivationLink = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await userService.sendActivationLink(req.body.email);
+    return responseData(res, 'success');
+  } catch (err) {
+    next(err);
+  }
+};
+
+// export const activateEmail = async (req: Request, res: Response, next: NextFunction) => {
+//   await userService.activateEmail(req.params);
+// };

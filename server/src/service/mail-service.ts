@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import * as process from 'node:process';
 
 dotenv.config();
 
@@ -21,12 +22,12 @@ class MailService {
     await this.transporter.sendMail({
       from: process.env.SMTP_USER,
       to,
-      subject: 'Активация аккаунта на https://firemoney.ru',
+      subject: `Активация аккаунта на ${process.env.API_URL}`,
       text: '',
       html: `
         <div>
          <h1>Для активации перейдите по ссылке</h1>
-         <a href="${link}">https://firemoney.ru</a>
+         <a href="${link}">${link}</a>
         </div>`,
     });
   }
