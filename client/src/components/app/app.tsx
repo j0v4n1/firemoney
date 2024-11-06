@@ -12,7 +12,7 @@ import OurServices from '../our-services/our-services';
 import Faq from '../faq/faq';
 import GetMoney from '../get-money/get-money';
 import React, { useEffect, useState } from 'react';
-import { getUserData } from '../../utils/api';
+import { apiResponse, getUserData } from '../../utils/api';
 import { Spinner } from 'react-bootstrap/';
 import { setIsAuthorizedUser, setUser } from '../../store/slices/user/user';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -23,22 +23,19 @@ import commonStyles from '../../styles/common.module.css';
 
 export default function App() {
   const [loading, setLoading] = useState(true);
-  const { isLoggingOut } = useAppSelector((state) => state.user);
+  const { isLoggingOut, accessToken } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [loadingAnimation, setLoadingAnimation] = useState('');
 
   useEffect(() => {
-    setLoading(true);
-    getUserData()
-      .then((data) => {
+    apiResponse(dispatch, setLoading);
+    getUserData(accessToken)
+      .then((response) => {
         setLoading(false);
-        dispatch(setUser(data.data.user));
+        dispatch(setUser(response.data.user));
         dispatch(setIsAuthorizedUser(true));
       })
-      .catch((error) => {
-        setLoading(false);
-        console.log(error);
-      });
+      .catch(() => {});
   }, []);
 
   useEffect(() => {

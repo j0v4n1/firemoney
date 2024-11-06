@@ -18,7 +18,7 @@ import {
   setType,
 } from '../../store/slices/modal/modal';
 import { ModalTypes } from './modal.types';
-import { sendUserData, sendVerificationCode } from '../../utils/api';
+import { login, sendUserData, sendVerificationCode } from '../../utils/api';
 import ModalRegister from '../modal-register/modal-register';
 import ModalVerification from '../modal-verification/modal-verification';
 import ModalReset from '../modal-reset/modal-reset';
@@ -90,6 +90,7 @@ export default function Modal() {
               localStorage.setItem('refreshToken', data.data.refreshToken);
               dispatch(setIsSendingRequest(false));
               dispatch(setType(ModalTypes.REGISTER));
+              onClose();
             })
             .catch(() => {
               dispatch(setIsSendingRequest(false));
@@ -113,6 +114,23 @@ export default function Modal() {
         break;
       case ModalTypes.INFORMATION:
         dispatch(closeModal());
+        break;
+      case ModalTypes.LOGIN:
+        login(number, password)
+          .then((data) => {
+            if (data.data.status === 'failure') {
+              dispatch(setIsSendingRequest(false));
+              return dispatch(setIsConflict(true));
+            }
+            dispatch(setUser(data.data.user));
+            localStorage.setItem('refreshToken', data.data.refreshToken);
+            dispatch(setIsSendingRequest(false));
+            dispatch(setIsAuthorizedUser(true));
+            onClose();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
         break;
       default:
         break;

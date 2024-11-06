@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from '../../../types/common.types';
 
 const initialState = {
-  _id: '',
+  id: '',
   name: '',
   lastName: '',
   email: '',
@@ -19,7 +19,7 @@ const user = createSlice({
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<Omit<User, 'password'>>) => {
-      state._id = action.payload._id;
+      state.id = action.payload.id;
       state.name = action.payload.name;
       state.lastName = action.payload.lastName;
       state.email = action.payload.email;
@@ -27,6 +27,16 @@ const user = createSlice({
       state.isActivatedNumber = action.payload.isActivatedNumber;
       state.isActivatedEmail = action.payload.isActivatedEmail;
       state.accessToken = action.payload.accessToken;
+    },
+    clearUser: (state) => {
+      state.id = '';
+      state.name = '';
+      state.lastName = '';
+      state.email = '';
+      state.number = '';
+      state.isActivatedNumber = false;
+      state.isActivatedEmail = false;
+      state.accessToken = '';
     },
     setTempNumber: (state, action: PayloadAction<string>) => {
       state.number = action.payload;
@@ -37,8 +47,18 @@ const user = createSlice({
     setIsLoggingOut: (state, action: PayloadAction<boolean>) => {
       state.isLoggingOut = action.payload;
     },
+    setAccessToken: (state, action: PayloadAction<string>) => {
+      state.accessToken = action.payload;
+    },
   },
 });
 
-export const { setUser, setTempNumber, setIsAuthorizedUser, setIsLoggingOut } = user.actions;
+export const {
+  setUser,
+  setTempNumber,
+  setIsAuthorizedUser,
+  setIsLoggingOut,
+  clearUser,
+  setAccessToken,
+} = user.actions;
 export default user.reducer;

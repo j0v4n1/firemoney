@@ -1,4 +1,8 @@
 import { Response } from 'express';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 export const responseData = (
   res: Response,
   status: 'success' | 'failure',

@@ -5,35 +5,55 @@ import { useAppDispatch, useAppSelector } from '../../store/store.types';
 import avatar from '../../images/ava.png';
 import Button from 'react-bootstrap/Button';
 import { toggleLockScroll } from '../../utils/common';
-import { setIsLoggingOut } from '../../store/slices/user/user';
-import { sendEmailForActivation } from '../../utils/api';
+import { clearUser, setIsAuthorizedUser, setIsLoggingOut } from '../../store/slices/user/user';
+import { logout, sendEmailForActivation } from '../../utils/api';
 import { openModal, setIsSendingRequest, setType } from '../../store/slices/modal/modal';
 import { Spinner } from 'react-bootstrap/';
 import { ModalTypes } from '../modal/modal.types';
+import { useNavigate } from 'react-router-dom';
 
 export default function UserDashboard() {
-  const { name, lastName, email, number, isActivatedEmail } = useAppSelector((state) => state.user);
+  const { id, name, lastName, email, number, isActivatedEmail } = useAppSelector(
+    (state) => state.user
+  );
   const { isSendingRequest } = useAppSelector((state) => state.modal);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleActivationResponse = () => {
+    dispatch(setIsSendingRequest(false));
+    dispatch(setType(ModalTypes.INFORMATION));
+    dispatch(openModal());
+  };
 
   const handleButton = (button: 'logout' | 'confirm') => {
     if (button === 'logout') {
       dispatch(setIsLoggingOut(true));
       toggleLockScroll('lock');
-      setTimeout(() => {
-        dispatch(setIsLoggingOut(false));
-        toggleLockScroll('unlock');
-      }, 3000);
+      logout(id)
+        .then(() => {
+          localStorage.removeItem('refreshToken');
+          dispatch(setIsLoggingOut(false));
+          toggleLockScroll('unlock');
+          dispatch(clearUser());
+          dispatch(setIsAuthorizedUser(false));
+          dispatch(setType(ModalTypes.LOGIN));
+          navigate(`/`);
+        })
+        .catch((err) => {
+          console.log(err);
+          dispatch(setIsLoggingOut(false));
+          toggleLockScroll('unlock');
+        });
     } else {
       dispatch(setIsSendingRequest(true));
       sendEmailForActivation(email)
         .then(() => {
-          dispatch(setIsSendingRequest(false));
-          dispatch(setType(ModalTypes.INFORMATION));
-          dispatch(openModal());
+          handleActivationResponse();
         })
         .catch((err) => {
           console.log(err);
+          console.log('Функция sendEmailForActivation упала с ошибкой');
         });
     }
   };

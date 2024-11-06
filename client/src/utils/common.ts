@@ -29,7 +29,10 @@ export const sendNumber = (number: string, dispatch: Dispatch, isCodeVisible: bo
     })
     .catch((error) => {
       dispatch(setIsSendingRequest(false));
-      console.log(error);
+      if (error.response.status === 409) {
+        dispatch(setIsSendingRequest(false));
+        return dispatch(setIsConflict(true));
+      }
     });
 };
 

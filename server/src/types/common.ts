@@ -7,4 +7,6 @@ export type UserData = {
   email: string;
   number: string;
   password: string;
+  isActivatedNumber: boolean;
+  isActivatedEmail: boolean;
 };

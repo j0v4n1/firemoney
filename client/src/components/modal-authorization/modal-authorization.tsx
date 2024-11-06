@@ -3,9 +3,10 @@ import styles from '../modal/modal.module.css';
 import { ModalTypes } from '../modal/modal.types';
 import { useAppDispatch, useAppSelector } from '../../store/store.types';
 import { setNumber, setPassword, setType } from '../../store/slices/modal/modal';
+import React from 'react';
 
 export default function ModalAuthorization() {
-  const { number, password } = useAppSelector((store) => store.modal);
+  const { number, password, isConflict } = useAppSelector((store) => store.modal);
   const dispatch = useAppDispatch();
   const handleFormNumber = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     dispatch(setNumber(event.target.value));
@@ -17,13 +18,23 @@ export default function ModalAuthorization() {
     <>
       <Form.Group className="mb-3">
         <Form.Label column={true}>Номер телефона</Form.Label>
-        <Form.Control value={number} onChange={handleFormNumber} type="email" placeholder="" />
+        <Form.Control value={number} onChange={handleFormNumber} type="text" placeholder="" />
       </Form.Group>
       <Form.Group>
         <Form.Label column={true} htmlFor="password">
           Пароль
         </Form.Label>
-        <Form.Control value={password} onChange={handleFormPassword} type="password" id="password" />
+        <Form.Control
+          value={password}
+          onChange={handleFormPassword}
+          type="password"
+          id="password"
+        />
+        {isConflict ? (
+          <Form.Label style={{ color: 'red' }} column={true}>
+            Пароль введён неверно
+          </Form.Label>
+        ) : null}
         <Form.Text id="passwordHelpBlock" muted>
           <div className={styles['modal__text']}>
             Вы — новый пользователь?{' '}

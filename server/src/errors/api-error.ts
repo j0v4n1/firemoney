@@ -9,8 +9,8 @@ export default class ApiError extends Error {
   static unauthorizedError() {
     return new ApiError(401, 'Пользователь не авторизован');
   }
-  static incorrectDataError() {
-    return new ApiError(400, 'Неверные данные');
+  static incorrectDataError(reason: string) {
+    return new ApiError(400, `Неверные данные, причина: ${reason}`);
   }
   static notFoundError(reason: string) {
     return new ApiError(404, `Не найдено, причина: ${reason}`);

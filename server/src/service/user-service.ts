@@ -4,11 +4,14 @@ import ApiError from '../errors/api-error';
 import { createVerificationCode } from '../utils/common';
 import { v4 as uuidv4 } from 'uuid';
 import tokenService from './token-service';
+import TokenService from './token-service';
 import mailService from './mail-service';
 import { UserData } from '../types/common';
 import { UserDto } from '../dto/user-dto';
-import { Types } from 'mongoose';
 import dotenv from 'dotenv';
+import TokenModel from '../models/token';
+import * as process from 'node:process';
+import { Types } from 'mongoose';
 
 dotenv.config();
 
@@ -42,15 +45,9 @@ class UserService {
     user.isActivatedNumber = true;
     user.createdAt = undefined;
     await user.save();
-    const tokens = tokenService.generateTokens({
-      id: user._id,
-      name: user.name,
-      lastName: user.lastName,
-      email: user.email,
-      number: user.number,
-    });
-    await tokenService.saveToken(user._id, tokens.refreshToken);
     const userDto = new UserDto(user);
+    const tokens = tokenService.generateTokens({ ...userDto });
+    await tokenService.saveToken(user._id, tokens.refreshToken);
     return {
       user: { ...userDto, accessToken: tokens.accessToken },
       refreshToken: tokens.refreshToken,
@@ -85,20 +82,6 @@ class UserService {
     }
   }
 
-  async authenticate(id: Types.ObjectId) {
-    const user = await UserModel.findById(id);
-    if (!user) {
-      throw ApiError.notFoundError('Пользователь не найден');
-    }
-    const userDto = new UserDto(user);
-    const { isActivatedNumber, isActivatedEmail, ...payload } = userDto;
-    const tokens = tokenService.generateTokens(payload);
-    return {
-      user: { ...userDto, accessToken: tokens.accessToken },
-      refreshToken: tokens.refreshToken,
-    };
-  }
-
   async sendActivationLink(email: string) {
     const user = await UserModel.findOne({ email });
     if (!user) {
@@ -122,6 +105,53 @@ class UserService {
     user.isActivatedEmail = true;
     user.createdAt = undefined;
     await user.save();
+  }
+
+  async logout(id: string) {
+    const user = await UserModel.findById(id);
+    if (!user) {
+      throw ApiError.notFoundError('Пользователь не найден');
+    }
+    const token = await TokenModel.findOne({ user: user._id });
+    if (!token) {
+      throw ApiError.notFoundError('Токен не найден');
+    }
+    await tokenService.deleteToken(token.refreshToken);
+  }
+
+  async login(number: string, password: string) {
+    const user = await UserModel.findOne({ number });
+    if (!user) {
+      throw ApiError.notFoundError('Пользователь не найден');
+    }
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return false;
+    }
+    const userDto = new UserDto(user);
+    const tokens = TokenService.generateTokens({ ...userDto });
+    await tokenService.saveToken(user._id, tokens.refreshToken);
+    return { ...userDto, refreshToken: tokens.refreshToken, accessToken: tokens.accessToken };
+  }
+
+  async authenticate(id: Types.ObjectId) {
+    const user = await UserModel.findById(id);
+    if (!user) {
+      throw ApiError.notFoundError('Пользователь не найден');
+    }
+    const userDto = new UserDto(user);
+    const tokens = tokenService.generateTokens({ ...userDto });
+    return {
+      user: { ...userDto, accessToken: tokens.accessToken },
+      refreshToken: tokens.refreshToken,
+    };
+  }
+
+  checkUserId(id: Types.ObjectId) {
+    if (!id) {
+      throw ApiError.unauthorizedError();
+    }
+    return id;
   }
 }
 

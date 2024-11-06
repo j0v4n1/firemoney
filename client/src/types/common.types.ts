@@ -4,7 +4,7 @@ export type Response = {
 };
 
 export type User = {
-  _id: string;
+  id: string;
   name: string;
   lastName: string;
   number: string;
@@ -22,4 +22,10 @@ type VerificationCode = {
 export type UserResponse = Response & { user: Omit<User, 'password'> } & {
   refreshToken: string;
 };
+
+export type JwtExpired = {
+  status: 'failure';
+  message: 'jwt expired';
+};
+
 export type VerificationCodeResponse = VerificationCode & Response;
