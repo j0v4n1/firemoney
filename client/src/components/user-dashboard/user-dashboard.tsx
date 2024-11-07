@@ -32,7 +32,7 @@ export default function UserDashboard() {
       toggleLockScroll('lock');
       logout(id)
         .then(() => {
-          localStorage.removeItem('refreshToken');
+          localStorage.removeItem('token');
           dispatch(setIsLoggingOut(false));
           toggleLockScroll('unlock');
           dispatch(clearUser());

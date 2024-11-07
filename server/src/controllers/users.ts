@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import userService from '../service/user-service';
-import { responseData } from '../utils/common';
+import { responseData, saveCookie } from '../utils/common';
 import { UserData } from '../types/common';
 import UserService from '../service/user-service';
 import { ExtendedRequest } from '../types/express';
@@ -28,7 +28,9 @@ export const register = async (
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = await userService.verifySmsCode(req.body);
-    return responseData(res, 'success', { ...user });
+    saveCookie(res, user.refreshToken);
+    const { refreshToken, ...userWithoutToken } = user;
+    return responseData(res, 'success', { ...userWithoutToken });
   } catch (err) {
     next(err);
   }
@@ -52,7 +54,9 @@ export const authenticate = async (req: ExtendedRequest, res: Response, next: Ne
   try {
     const userId = userService.checkUserId(req.user.id);
     const user = await userService.authenticate(userId);
-    return responseData(res, 'success', { ...user });
+    const { refreshToken, ...userWithoutRefreshToken } = user;
+    saveCookie(res, user.refreshToken);
+    return responseData(res, 'success', { ...userWithoutRefreshToken });
   } catch (err) {
     next(err);
   }
@@ -79,6 +83,7 @@ export const activateEmail = async (req: Request, res: Response, next: NextFunct
 export const logout = async (req: Request, res: Response, next: NextFunction) => {
   try {
     await UserService.logout(req.body.id);
+    res.clearCookie('token');
     return responseData(res, 'success');
   } catch (err) {
     next(err);
@@ -89,22 +94,24 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
   const { password, number } = req.body;
   try {
     const data = await UserService.login(number, password);
-    if (typeof data === 'boolean') {
-      return responseData(res, 'failure');
-    }
     const { refreshToken, ...rest } = data;
-    return responseData(res, 'success', { user: { ...rest }, refreshToken });
+    saveCookie(res, refreshToken);
+    return responseData(res, 'success', { user: { ...rest } });
   } catch (err) {
     next(err);
   }
 };
 
 export const refresh = async (req: Request, res: Response, next: NextFunction) => {
-  let token = TokenService.checkIsTokenProvided(req.headers.authorization).replace('Bearer ', '');
+  let token = req.cookies.refreshToken;
   try {
+    token = TokenService.checkIsTokenProvided(token).replace('Bearer ', '');
     const user = tokenService.validateToken(token, process.env.JWT_SECRET_REFRESH) as JwtPayload;
     const userData = await UserService.authenticate(user.id);
-    return responseData(res, 'success', { ...userData });
+    const { refreshToken } = userData;
+    const accessToken = userData.user.accessToken;
+    saveCookie(res, refreshToken);
+    return responseData(res, 'success', { accessToken });
   } catch (err) {
     next(err);
   }

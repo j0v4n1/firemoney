@@ -1,13 +1,15 @@
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
 import 'dotenv/config';
 import usersRouter from './routes/users';
 import errorsMiddleware from './middlewares/errors';
 
 const app = express();
-app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use('/api', usersRouter);
 app.use(errorsMiddleware);
 

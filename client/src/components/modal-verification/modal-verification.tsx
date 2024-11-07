@@ -1,6 +1,6 @@
 import { Form } from 'react-bootstrap';
 import styles from '../modal/modal.module.css';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ModalTypes } from '../modal/modal.types';
 import { useAppDispatch, useAppSelector } from '../../store/store.types';
 import {

@@ -126,7 +126,7 @@ class UserService {
     }
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return false;
+      throw ApiError.conflictError('неверный пароль');
     }
     const userDto = new UserDto(user);
     const tokens = TokenService.generateTokens({ ...userDto });

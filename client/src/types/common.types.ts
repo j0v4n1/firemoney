@@ -23,6 +23,10 @@ export type UserResponse = Response & { user: Omit<User, 'password'> } & {
   refreshToken: string;
 };
 
+export type TokenResponse = Response & {
+  accessToken: string;
+};
+
 export type JwtExpired = {
   status: 'failure';
   message: 'jwt expired';

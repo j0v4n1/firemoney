@@ -10,7 +10,6 @@ const initialState = {
   isActivatedNumber: false,
   isActivatedEmail: false,
   isAuthorizedUser: false,
-  accessToken: '',
   isLoggingOut: false,
 };
 
@@ -26,7 +25,6 @@ const user = createSlice({
       state.number = action.payload.number;
       state.isActivatedNumber = action.payload.isActivatedNumber;
       state.isActivatedEmail = action.payload.isActivatedEmail;
-      state.accessToken = action.payload.accessToken;
     },
     clearUser: (state) => {
       state.id = '';
@@ -36,7 +34,6 @@ const user = createSlice({
       state.number = '';
       state.isActivatedNumber = false;
       state.isActivatedEmail = false;
-      state.accessToken = '';
     },
     setTempNumber: (state, action: PayloadAction<string>) => {
       state.number = action.payload;
@@ -47,18 +44,9 @@ const user = createSlice({
     setIsLoggingOut: (state, action: PayloadAction<boolean>) => {
       state.isLoggingOut = action.payload;
     },
-    setAccessToken: (state, action: PayloadAction<string>) => {
-      state.accessToken = action.payload;
-    },
   },
 });
 
-export const {
-  setUser,
-  setTempNumber,
-  setIsAuthorizedUser,
-  setIsLoggingOut,
-  clearUser,
-  setAccessToken,
-} = user.actions;
+export const { setUser, setTempNumber, setIsAuthorizedUser, setIsLoggingOut, clearUser } =
+  user.actions;
 export default user.reducer;

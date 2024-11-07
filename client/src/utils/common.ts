@@ -12,10 +12,6 @@ import { sendPhoneNumber } from './api';
 export const sendNumber = (number: string, dispatch: Dispatch, isCodeVisible: boolean) => {
   sendPhoneNumber(number)
     .then((data) => {
-      if (data.data.status === 'failure') {
-        dispatch(setIsSendingRequest(false));
-        return dispatch(setIsConflict(true));
-      }
       dispatch(setIsSendingRequest(false));
       dispatch(setType(ModalTypes.VERIFY));
       dispatch(setNumber(''));
@@ -29,7 +25,7 @@ export const sendNumber = (number: string, dispatch: Dispatch, isCodeVisible: bo
     })
     .catch((error) => {
       dispatch(setIsSendingRequest(false));
-      if (error.response.status === 409) {
+      if (error.status === 409) {
         dispatch(setIsSendingRequest(false));
         return dispatch(setIsConflict(true));
       }

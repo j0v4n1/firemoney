@@ -12,30 +12,37 @@ import OurServices from '../our-services/our-services';
 import Faq from '../faq/faq';
 import GetMoney from '../get-money/get-money';
 import React, { useEffect, useState } from 'react';
-import { apiResponse, getUserData } from '../../utils/api';
+import { getUserData } from '../../utils/api';
 import { Spinner } from 'react-bootstrap/';
-import { setIsAuthorizedUser, setUser } from '../../store/slices/user/user';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/store.types';
 import UserDashboard from '../user-dashboard/user-dashboard';
 import styles from './app.module.css';
 import commonStyles from '../../styles/common.module.css';
+import { setIsAuthorizedUser, setUser } from '../../store/slices/user/user';
 
 export default function App() {
   const [loading, setLoading] = useState(true);
-  const { isLoggingOut, accessToken } = useAppSelector((state) => state.user);
+  const { isLoggingOut } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [loadingAnimation, setLoadingAnimation] = useState('');
 
   useEffect(() => {
-    apiResponse(dispatch, setLoading);
-    getUserData(accessToken)
-      .then((response) => {
-        setLoading(false);
-        dispatch(setUser(response.data.user));
-        dispatch(setIsAuthorizedUser(true));
-      })
-      .catch(() => {});
+    const token = localStorage.getItem('token');
+    if (token) {
+      getUserData()
+        .then((response) => {
+          console.log(response);
+          dispatch(setUser(response.data.user));
+          dispatch(setIsAuthorizedUser(true));
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {

@@ -16,10 +16,11 @@ const usersRouter = Router();
 
 usersRouter.post('/users/register', register);
 usersRouter.post('/users/verification', sendVerificationCode);
+usersRouter.post('/users/reset', sendVerificationCode);
 usersRouter.post('/users/verify', createUser);
 usersRouter.post('/users/activation', AuthMiddleware, sendActivationLink);
 usersRouter.get('/users/activate/:link', activateEmail);
-usersRouter.post('/users/logout', logout);
+usersRouter.post('/users/logout', AuthMiddleware, logout);
 usersRouter.post('/users/login', login);
 usersRouter.get('/users/refresh', refresh);
 usersRouter.get('/users/auth', AuthMiddleware, authenticate);

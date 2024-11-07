@@ -1,7 +1,4 @@
 import { Response } from 'express';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 export const responseData = (
   res: Response,
@@ -24,3 +21,10 @@ export const createVerificationCode = () => {
   }
   return +code;
 };
+
+export const saveCookie = (res: Response, token: string) =>
+  res.cookie('refreshToken', token, {
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 дней
+    httpOnly: true,
+    sameSite: true,
+  });

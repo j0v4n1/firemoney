@@ -22,8 +22,6 @@ export default (req: Request, res: Response, next: NextFunction) => {
     req.user = payload as User;
     next();
   } catch (error: any) {
-    const errorMessage =
-      error instanceof Error ? error.message : 'Непредвиденная ошибка при проверке токена';
-    return responseData(res, 'failure', { message: errorMessage });
+    throw ApiError.unauthorizedError();
   }
 };

@@ -117,13 +117,13 @@ export default function Modal() {
         break;
       case ModalTypes.LOGIN:
         login(number, password)
-          .then((data) => {
-            if (data.data.status === 'failure') {
+          .then((response) => {
+            if (response.data.status === 'failure') {
               dispatch(setIsSendingRequest(false));
               return dispatch(setIsConflict(true));
             }
-            dispatch(setUser(data.data.user));
-            localStorage.setItem('refreshToken', data.data.refreshToken);
+            dispatch(setUser(response.data.user));
+            localStorage.setItem('token', response.data.user.accessToken);
             dispatch(setIsSendingRequest(false));
             dispatch(setIsAuthorizedUser(true));
             onClose();
