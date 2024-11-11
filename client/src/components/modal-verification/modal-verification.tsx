@@ -54,7 +54,7 @@ export default function ModalVerification() {
     <>
       <Form.Group style={{ position: 'relative' }} className="mb-3">
         <Form.Label column={true}>
-          {type === ModalTypes.VERIFICATION ? 'Номер телефона' : 'Введите код из SMS'}
+          {type === ModalTypes.VERIFICATION ? 'Номер телефона' : 'Код подтверждения'}
         </Form.Label>
         <Form.Control
           isInvalid={isConflict}

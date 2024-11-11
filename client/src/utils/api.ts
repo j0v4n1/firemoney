@@ -23,7 +23,6 @@ axiosInstance.interceptors.request.use((config) => {
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    console.log(response);
     return response;
   },
   (error) => {
@@ -69,3 +68,6 @@ export const logout = (id: string) => axiosInstance.post('users/logout', { id })
 
 export const login = (number: string, password: string) =>
   axiosInstance.post<UserResponse>('users/login', { number, password });
+
+export const resetPassword = (number: string) =>
+  axiosInstance.post<VerificationCodeResponse>('users/reset', { number });

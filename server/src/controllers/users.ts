@@ -41,12 +41,22 @@ export const sendVerificationCode = async (
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    const { number } = req.body;
-    const user = await userService.createVerificationCode(number);
-    return responseData(res, 'success', { ...user });
-  } catch (err) {
-    next(err);
+  const { number } = req.body;
+  const endpoint = req.path;
+  if (endpoint === '/users/verification') {
+    try {
+      const user = await userService.createTempUser(number);
+      return responseData(res, 'success', { ...user });
+    } catch (err) {
+      next(err);
+    }
+  } else {
+    try {
+      const verificationCode = await UserService.createVerificationCode(number);
+      return responseData(res, 'success', verificationCode);
+    } catch (error) {
+      next(error);
+    }
   }
 };
 

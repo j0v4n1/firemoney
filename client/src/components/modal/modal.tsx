@@ -1,24 +1,23 @@
 import styles from './modal.module.css';
 import commonStyles from '../../styles/common.module.css';
 import Button from 'react-bootstrap/Button';
-import { Modal as ModalBootstrap } from 'react-bootstrap/';
-import { Spinner } from 'react-bootstrap/';
+import { Modal as ModalBootstrap, Spinner } from 'react-bootstrap/';
 import { useAppDispatch, useAppSelector } from '../../store/store.types';
 import {
   closeModal,
-  setName,
-  setLastName,
-  setNumber,
-  setVerificationCode,
   setEmail,
-  setPassword,
-  setRepeatPassword,
   setIsConflict,
   setIsSendingRequest,
+  setLastName,
+  setName,
+  setNumber,
+  setPassword,
+  setRepeatPassword,
   setType,
+  setVerificationCode,
 } from '../../store/slices/modal/modal';
 import { ModalTypes } from './modal.types';
-import { login, sendUserData, sendVerificationCode } from '../../utils/api';
+import { login, resetPassword, sendUserData, sendVerificationCode } from '../../utils/api';
 import ModalRegister from '../modal-register/modal-register';
 import ModalVerification from '../modal-verification/modal-verification';
 import ModalReset from '../modal-reset/modal-reset';
@@ -70,6 +69,10 @@ export default function Modal() {
         return 'Восстановление пароля';
       case ModalTypes.INFORMATION:
         return 'Подтвердите E-mail';
+      case ModalTypes.VERIFY:
+        return 'Введите код из СМС';
+      case ModalTypes.VERIFICATION:
+        return 'Подтвердите номер телефона';
       default:
         return 'Вход в личный кабинет';
     }
@@ -87,10 +90,9 @@ export default function Modal() {
           sendVerificationCode(verificationCode)
             .then((data) => {
               dispatch(setUser(data.data.user));
-              localStorage.setItem('refreshToken', data.data.refreshToken);
+              localStorage.setItem('token', data.data.refreshToken);
               dispatch(setIsSendingRequest(false));
               dispatch(setType(ModalTypes.REGISTER));
-              onClose();
             })
             .catch(() => {
               dispatch(setIsSendingRequest(false));
@@ -130,6 +132,18 @@ export default function Modal() {
           })
           .catch((err) => {
             console.log(err);
+          });
+        break;
+      case ModalTypes.RESET:
+        resetPassword(number)
+          .then((response) => {
+            dispatch(setIsSendingRequest(false));
+            dispatch(setType(ModalTypes.VERIFY));
+            console.log(response.data.verificationCode);
+          })
+          .catch((error) => {
+            dispatch(setIsSendingRequest(false));
+            console.log(error);
           });
         break;
       default:

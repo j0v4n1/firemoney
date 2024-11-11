@@ -54,7 +54,7 @@ class UserService {
     };
   }
 
-  async createVerificationCode(number: string) {
+  async createTempUser(number: string) {
     const numberCandidate = await UserModel.findOne({ number });
     if (numberCandidate) {
       if (numberCandidate.isActivatedNumber) {
@@ -152,6 +152,21 @@ class UserService {
       throw ApiError.unauthorizedError();
     }
     return id;
+  }
+
+  async createVerificationCode(number: string) {
+    const user = await UserModel.findOne({ number });
+    if (!user) {
+      throw ApiError.notFoundError('Пользователь с таким номером не найден');
+    }
+    if (!user.isActivatedNumber) {
+      throw ApiError.conflictError('Номер не подтверждён');
+    }
+    const verificationCode = createVerificationCode();
+    user.verificationCode = verificationCode;
+    user.createdAt = undefined;
+    await user.save();
+    return { verificationCode };
   }
 }
 

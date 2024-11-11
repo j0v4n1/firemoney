@@ -14,12 +14,14 @@ import GetMoney from '../get-money/get-money';
 import React, { useEffect, useState } from 'react';
 import { getUserData } from '../../utils/api';
 import { Spinner } from 'react-bootstrap/';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/store.types';
 import UserDashboard from '../user-dashboard/user-dashboard';
 import styles from './app.module.css';
 import commonStyles from '../../styles/common.module.css';
-import { setIsAuthorizedUser, setUser } from '../../store/slices/user/user';
+import { setIsAuthorizedUser, setTempNumber, setUser } from '../../store/slices/user/user';
+import { setType } from '../../store/slices/modal/modal';
+import { ModalTypes } from '../modal/modal.types';
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -32,10 +34,15 @@ export default function App() {
     if (token) {
       getUserData()
         .then((response) => {
-          console.log(response);
-          dispatch(setUser(response.data.user));
-          dispatch(setIsAuthorizedUser(true));
-          setLoading(false);
+          if (response.data.user.name === 'null') {
+            dispatch(setType(ModalTypes.REGISTER));
+            dispatch(setTempNumber(response.data.user.number));
+            setLoading(false);
+          } else {
+            dispatch(setUser(response.data.user));
+            dispatch(setIsAuthorizedUser(true));
+            setLoading(false);
+          }
         })
         .catch((error) => {
           console.log(error);
