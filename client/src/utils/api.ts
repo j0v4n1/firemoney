@@ -58,8 +58,8 @@ export const getUserData = () => axiosInstance.get<UserResponse>('users/auth');
 export const sendPhoneNumber = (number: string) =>
   axiosInstance.post<VerificationCodeResponse>('users/verification', { number });
 
-export const sendVerificationCode = (verificationCode: number) =>
-  axiosInstance.post<UserResponse>('users/verify', { verificationCode });
+export const sendVerificationCode = <T>(verificationCode: number, path: string) =>
+  axiosInstance.post<T>(path, { verificationCode });
 
 export const sendEmailForActivation = (email: string) =>
   axiosInstance.post<Response>('users/activation', { email });
@@ -71,3 +71,6 @@ export const login = (number: string, password: string) =>
 
 export const resetPassword = (number: string) =>
   axiosInstance.post<VerificationCodeResponse>('users/reset', { number });
+
+export const activateNewPassword = (number: string, password: string) =>
+  axiosInstance.post<Response>('users/reset/activate', { number, password });

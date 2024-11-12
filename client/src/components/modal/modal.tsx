@@ -17,7 +17,13 @@ import {
   setVerificationCode,
 } from '../../store/slices/modal/modal';
 import { ModalTypes } from './modal.types';
-import { login, resetPassword, sendUserData, sendVerificationCode } from '../../utils/api';
+import {
+  activateNewPassword,
+  login,
+  resetPassword,
+  sendUserData,
+  sendVerificationCode,
+} from '../../utils/api';
 import ModalRegister from '../modal-register/modal-register';
 import ModalVerification from '../modal-verification/modal-verification';
 import ModalReset from '../modal-reset/modal-reset';
@@ -25,6 +31,9 @@ import ModalAuthorization from '../modal-authorization/modal-authorization';
 import { setIsAuthorizedUser, setTempNumber, setUser } from '../../store/slices/user/user';
 import { sendNumber } from '../../utils/common';
 import ModalInformation from '../modal-information/modal-information';
+import ModalNewPass from '../modal-new-password/modal-new-password';
+import ModalNewPassword from '../modal-new-password/modal-new-password';
+import { NumberResponse, UserResponse } from '../../types/common.types';
 
 export default function Modal() {
   const {
@@ -54,7 +63,10 @@ export default function Modal() {
       dispatch(setPassword(''));
       dispatch(setRepeatPassword(''));
       dispatch(setIsConflict(false));
-      if (tempNumber !== '') {
+      if (
+        (tempNumber !== '' && type === ModalTypes.REGISTER) ||
+        (tempNumber !== '' && type === ModalTypes.NEW_PASSWORD)
+      ) {
         return;
       }
       dispatch(setType(ModalTypes.LOGIN));
@@ -67,12 +79,18 @@ export default function Modal() {
         return 'Регистрация';
       case ModalTypes.RESET:
         return 'Восстановление пароля';
-      case ModalTypes.INFORMATION:
+      case ModalTypes.INFO_ACTIVATE:
         return 'Подтвердите E-mail';
+      case ModalTypes.INFO_RESET:
+        return 'Пароль сброшен';
       case ModalTypes.VERIFY:
+        return 'Введите код из СМС';
+      case ModalTypes.VERIFY_TO_RESET:
         return 'Введите код из СМС';
       case ModalTypes.VERIFICATION:
         return 'Подтвердите номер телефона';
+      case ModalTypes.NEW_PASSWORD:
+        return 'Восстановление пароля';
       default:
         return 'Вход в личный кабинет';
     }
@@ -87,12 +105,26 @@ export default function Modal() {
         break;
       case ModalTypes.VERIFY:
         if (verificationCode) {
-          sendVerificationCode(verificationCode)
+          sendVerificationCode<UserResponse>(verificationCode, 'users/verify')
             .then((data) => {
               dispatch(setUser(data.data.user));
               localStorage.setItem('token', data.data.refreshToken);
               dispatch(setIsSendingRequest(false));
               dispatch(setType(ModalTypes.REGISTER));
+            })
+            .catch(() => {
+              dispatch(setIsSendingRequest(false));
+              return dispatch(setIsConflict(true));
+            });
+        }
+        break;
+      case ModalTypes.VERIFY_TO_RESET:
+        if (verificationCode) {
+          sendVerificationCode<NumberResponse>(verificationCode, 'users/reset/verify')
+            .then((response) => {
+              dispatch(setTempNumber(response.data.number));
+              dispatch(setIsSendingRequest(false));
+              dispatch(setType(ModalTypes.NEW_PASSWORD));
             })
             .catch(() => {
               dispatch(setIsSendingRequest(false));
@@ -114,8 +146,11 @@ export default function Modal() {
             onClose();
           });
         break;
-      case ModalTypes.INFORMATION:
-        dispatch(closeModal());
+      case ModalTypes.INFO_ACTIVATE:
+        onClose();
+        break;
+      case ModalTypes.INFO_RESET:
+        onClose();
         break;
       case ModalTypes.LOGIN:
         login(number, password)
@@ -138,8 +173,19 @@ export default function Modal() {
         resetPassword(number)
           .then((response) => {
             dispatch(setIsSendingRequest(false));
-            dispatch(setType(ModalTypes.VERIFY));
+            dispatch(setType(ModalTypes.VERIFY_TO_RESET));
             console.log(response.data.verificationCode);
+          })
+          .catch((error) => {
+            dispatch(setIsSendingRequest(false));
+            console.log(error);
+          });
+        break;
+      case ModalTypes.NEW_PASSWORD:
+        activateNewPassword(tempNumber, password)
+          .then(() => {
+            dispatch(setIsSendingRequest(false));
+            dispatch(setType(ModalTypes.INFO_RESET));
           })
           .catch((error) => {
             dispatch(setIsSendingRequest(false));
@@ -157,12 +203,20 @@ export default function Modal() {
         return <ModalVerification />;
       case ModalTypes.VERIFY:
         return <ModalVerification />;
+      case ModalTypes.VERIFY_TO_RESET:
+        return <ModalVerification />;
       case ModalTypes.REGISTER:
         return <ModalRegister />;
       case ModalTypes.RESET:
         return <ModalReset />;
-      case ModalTypes.INFORMATION:
-        return <ModalInformation />;
+      case ModalTypes.INFO_ACTIVATE:
+        return (
+          <ModalInformation message="На почту отправлено ссылка для подтверждения, следуйте инструкции." />
+        );
+      case ModalTypes.INFO_RESET:
+        return <ModalInformation message="Можно войти с новым паролем." />;
+      case ModalTypes.NEW_PASSWORD:
+        return <ModalNewPassword />;
       default:
         return <ModalAuthorization />;
     }
@@ -187,7 +241,7 @@ export default function Modal() {
         <Button
           disabled={isSendingRequest || (!verificationCode && type === ModalTypes.VERIFY)}
           onClick={() => {
-            if (type !== ModalTypes.INFORMATION) {
+            if (!(type === ModalTypes.INFO_ACTIVATE || type === ModalTypes.INFO_RESET)) {
               dispatch(setIsSendingRequest(true));
             }
             handleSendButton(type);
@@ -195,7 +249,7 @@ export default function Modal() {
           className={commonStyles['btn-order'] + ' ' + styles['btn-order_size']}>
           {isSendingRequest ? (
             <Spinner size="sm" />
-          ) : type === ModalTypes.INFORMATION ? (
+          ) : type === ModalTypes.INFO_ACTIVATE || type === ModalTypes.INFO_RESET ? (
             'Ок'
           ) : (
             'Отправить'

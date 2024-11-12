@@ -32,4 +32,8 @@ export type JwtExpired = {
   message: 'jwt expired';
 };
 
+export type NumberResponse = {
+  number: string;
+};
+
 export type VerificationCodeResponse = VerificationCode & Response;

@@ -37,10 +37,16 @@ class UserService {
     return { user: userDto };
   }
 
-  async verifySmsCode(verificationCode: { verificationCode: number }) {
-    const user = await UserModel.findOne(verificationCode);
+  async verifySmsCode(code: number, path: string) {
+    const user = await UserModel.findOne({ verificationCode: code });
     if (!user) {
       throw ApiError.badRequestError('Код подтверждения неверный или срок его действия истек');
+    }
+    if (path === '/users/reset/verify') {
+      user.password = 'null';
+      user.createdAt = undefined;
+      await user.save();
+      return { number: user.number };
     }
     user.isActivatedNumber = true;
     user.createdAt = undefined;
@@ -53,7 +59,6 @@ class UserService {
       refreshToken: tokens.refreshToken,
     };
   }
-
   async createTempUser(number: string) {
     const numberCandidate = await UserModel.findOne({ number });
     if (numberCandidate) {
@@ -167,6 +172,18 @@ class UserService {
     user.createdAt = undefined;
     await user.save();
     return { verificationCode };
+  }
+
+  async activateNewPassword(number: string, password: string) {
+    console.log(number);
+    const user = await UserModel.findOne({ number });
+    if (!user) {
+      throw ApiError.notFoundError('Пользователь с таким номером не найден');
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
+    user.createdAt = undefined;
+    return await user.save();
   }
 }
 

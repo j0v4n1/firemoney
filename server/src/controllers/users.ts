@@ -6,7 +6,6 @@ import UserService from '../service/user-service';
 import { ExtendedRequest } from '../types/express';
 import tokenService from '../service/token-service';
 import dotenv from 'dotenv';
-import * as process from 'node:process';
 import { JwtPayload } from 'jsonwebtoken';
 import TokenService from '../service/token-service';
 
@@ -25,10 +24,16 @@ export const register = async (
   }
 };
 
-export const createUser = async (req: Request, res: Response, next: NextFunction) => {
+export const createUser = async (
+  req: Request<{}, {}, { verificationCode: number }>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { verificationCode } = req.body;
+  const endpoint = req.path;
   try {
-    const user = await userService.verifySmsCode(req.body);
-    saveCookie(res, user.refreshToken);
+    const user = await userService.verifySmsCode(verificationCode, endpoint);
+    saveCookie(res, user.refreshToken!);
     const { refreshToken, ...userWithoutToken } = user;
     return responseData(res, 'success', { ...userWithoutToken });
   } catch (err) {
@@ -43,20 +48,16 @@ export const sendVerificationCode = async (
 ) => {
   const { number } = req.body;
   const endpoint = req.path;
-  if (endpoint === '/users/verification') {
-    try {
+  try {
+    if (endpoint === '/users/verification') {
       const user = await userService.createTempUser(number);
       return responseData(res, 'success', { ...user });
-    } catch (err) {
-      next(err);
-    }
-  } else {
-    try {
+    } else {
       const verificationCode = await UserService.createVerificationCode(number);
       return responseData(res, 'success', verificationCode);
-    } catch (error) {
-      next(error);
     }
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -124,5 +125,35 @@ export const refresh = async (req: Request, res: Response, next: NextFunction) =
     return responseData(res, 'success', { accessToken });
   } catch (err) {
     next(err);
+  }
+};
+
+export const resetPassword = async (
+  req: Request<{}, {}, { verificationCode: number }>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { verificationCode } = req.body;
+  const endpoint = req.path;
+  try {
+    const number = await UserService.verifySmsCode(verificationCode, endpoint);
+    console.log('5');
+    return responseData(res, 'success', { ...number });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const activateNewPassword = async (
+  req: Request<{}, {}, { password: string; number: string }>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { password, number } = req.body;
+  try {
+    await UserService.activateNewPassword(number, password);
+    return responseData(res, 'success');
+  } catch (error) {
+    next(error);
   }
 };

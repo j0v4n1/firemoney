@@ -1,7 +1,9 @@
-export default function ModalInformation() {
+import { ModalInformationProps } from './modal-Information.types';
+
+export default function ModalInformation({ message }: ModalInformationProps) {
   return (
     <article>
-      <p>На почту отправлено ссылка для подтверждения, следуйте инструкции.</p>
+      <p>{message}</p>
     </article>
   );
 }

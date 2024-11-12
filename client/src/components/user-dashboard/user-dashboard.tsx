@@ -22,7 +22,7 @@ export default function UserDashboard() {
 
   const handleActivationResponse = () => {
     dispatch(setIsSendingRequest(false));
-    dispatch(setType(ModalTypes.INFORMATION));
+    dispatch(setType(ModalTypes.INFO_ACTIVATE));
     dispatch(openModal());
   };
 

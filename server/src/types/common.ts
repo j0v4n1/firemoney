@@ -10,3 +10,7 @@ export type UserData = {
   isActivatedNumber: boolean;
   isActivatedEmail: boolean;
 };
+
+export type UserWithToken = Omit<UserData, 'password'> & { accessToken: string };
+
+export type UserResponse = UserWithToken & { refreshToken: string };
