@@ -11,17 +11,35 @@ export default function NavbarDashboard() {
       <nav className={styles['nav-menu']}>
         <ul className={styles['nav-menu__list']}>
           <li>
-            <NavLink className={styles['nav-menu__link']} to="personal">
+            <NavLink
+              className={({ isActive }) =>
+                isActive
+                  ? `${styles['nav-menu__link']} ${styles['nav-menu__link_active']}`
+                  : styles['nav-menu__link']
+              }
+              to="personal">
               Личные данные
             </NavLink>
           </li>
           <li>
-            <NavLink className={styles['nav-menu__link']} to="loans">
+            <NavLink
+              className={({ isActive }) =>
+                isActive
+                  ? `${styles['nav-menu__link']} ${styles['nav-menu__link_active']}`
+                  : styles['nav-menu__link']
+              }
+              to="loans">
               Займы
             </NavLink>
           </li>
           <li>
-            <NavLink className={styles['nav-menu__link']} to="tools">
+            <NavLink
+              className={({ isActive }) =>
+                isActive
+                  ? `${styles['nav-menu__link']} ${styles['nav-menu__link_active']}`
+                  : styles['nav-menu__link']
+              }
+              to="settings">
               Настройки
             </NavLink>
           </li>

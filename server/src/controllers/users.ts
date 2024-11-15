@@ -137,7 +137,6 @@ export const resetPassword = async (
   const endpoint = req.path;
   try {
     const number = await UserService.verifySmsCode(verificationCode, endpoint);
-    console.log('5');
     return responseData(res, 'success', { ...number });
   } catch (error) {
     next(error);

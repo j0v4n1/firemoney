@@ -34,6 +34,7 @@ import ModalInformation from '../modal-information/modal-information';
 import ModalNewPass from '../modal-new-password/modal-new-password';
 import ModalNewPassword from '../modal-new-password/modal-new-password';
 import { NumberResponse, UserResponse } from '../../types/common.types';
+import ModalLoanApplication from '../modal-loan-application/modal-loan-application';
 
 export default function Modal() {
   const {
@@ -91,6 +92,8 @@ export default function Modal() {
         return 'Подтвердите номер телефона';
       case ModalTypes.NEW_PASSWORD:
         return 'Восстановление пароля';
+      case ModalTypes.LOAN_APPLICATION:
+        return 'Подвтердите данные';
       default:
         return 'Вход в личный кабинет';
     }
@@ -217,6 +220,8 @@ export default function Modal() {
         return <ModalInformation message="Можно войти с новым паролем." />;
       case ModalTypes.NEW_PASSWORD:
         return <ModalNewPassword />;
+      case ModalTypes.LOAN_APPLICATION:
+        return <ModalLoanApplication />;
       default:
         return <ModalAuthorization />;
     }
@@ -251,6 +256,8 @@ export default function Modal() {
             <Spinner size="sm" />
           ) : type === ModalTypes.INFO_ACTIVATE || type === ModalTypes.INFO_RESET ? (
             'Ок'
+          ) : type === ModalTypes.LOAN_APPLICATION ? (
+            'Отправить заявку'
           ) : (
             'Отправить'
           )}

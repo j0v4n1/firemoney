@@ -8,6 +8,7 @@ export enum ModalTypes {
   INFO_ACTIVATE = 'info-activate',
   INFO_RESET = 'info-reset',
   NEW_PASSWORD = 'new-password',
+  LOAN_APPLICATION = 'loan-application',
 }
 
 export type ModalProps = {

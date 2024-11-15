@@ -16,7 +16,7 @@ export default function ModalNewPassword() {
   };
   return (
     <>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+      <Form.Group className="mb-3">
         <Form.Label column={true}>Новый пароль</Form.Label>
         <Form.Control
           value={password}
@@ -25,7 +25,7 @@ export default function ModalNewPassword() {
           placeholder=""
         />
       </Form.Group>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+      <Form.Group className="mb-3">
         <Form.Label column={true}>Повторите новый пароль</Form.Label>
         <Form.Control
           value={repeatPassword}

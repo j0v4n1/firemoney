@@ -2,13 +2,26 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import styles from './calculator.module.css';
 import commonStyles from '../../styles/common.module.css';
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import arrowsImage from '../../images/arrows.svg';
 import { generateDate } from '../../utils/utils';
+import {
+  setLoan,
+  setTerm,
+  setPercent,
+  setTotalPriceWithPercent,
+} from '../../store/slices/calculator/calculator';
+import { openModal, setType } from '../../store/slices/modal/modal';
+import { useAppDispatch, useAppSelector } from '../../store/store.types';
+import { ModalTypes } from '../modal/modal.types';
 
 export default function Calculator() {
-  const [loan, setLoan] = useState<number | number[]>(1000);
-  const [term, setTerm] = useState<number | number[]>(3);
+  const { loan, term, percent, totalPriceWithPercent } = useAppSelector(
+    (state) => state.calculator
+  );
+  const { isAuthorizedUser } = useAppSelector((state) => state.user);
+
+  const dispatch = useAppDispatch();
 
   const railStyle: React.CSSProperties = { height: 7 };
   const trackStyle: React.CSSProperties = {
@@ -30,15 +43,29 @@ export default function Calculator() {
 
   const today = new Date();
 
-  const percent = () => {
+  const calculatePercent = () => {
     return ((loan as number) / 100) * 2;
   };
 
-  const totalPriceWithPercent = () => {
+  const calculateTotalPriceWithPercent = () => {
     if (typeof loan === 'number' && typeof term === 'number') {
-      return loan + percent() * term;
+      return loan + percent * term;
     }
     return 0;
+  };
+
+  useEffect(() => {
+    dispatch(setPercent(calculatePercent()));
+    dispatch(setTotalPriceWithPercent(calculateTotalPriceWithPercent()));
+  }, [loan, term, percent]);
+
+  const handleButtonClick = () => {
+    if (isAuthorizedUser) {
+      dispatch(setType(ModalTypes.LOAN_APPLICATION));
+      return dispatch(openModal());
+    }
+    dispatch(setType(ModalTypes.LOGIN));
+    return dispatch(openModal());
   };
 
   return (
@@ -53,7 +80,7 @@ export default function Calculator() {
           step={1000}
           value={loan}
           onChange={(newValue) => {
-            setLoan(newValue);
+            dispatch(setLoan(newValue));
           }}
         />
         <div className={styles['calculator__range-info']}>
@@ -71,14 +98,16 @@ export default function Calculator() {
           step={1}
           value={term}
           onChange={(newValue) => {
-            setTerm(newValue);
+            dispatch(setTerm(newValue));
           }}
         />
         <div className={styles['calculator__range-info']}>
           <div>3</div>
           <div>30</div>
         </div>
-        <button className={`${commonStyles['btn-order']} ${styles['btn-order_position']}`}>
+        <button
+          onClick={handleButtonClick}
+          className={`${commonStyles['btn-order']} ${styles['btn-order_position']}`}>
           Оформить заявку
         </button>
       </div>
@@ -94,11 +123,11 @@ export default function Calculator() {
         <div className={styles['calculator__total-right']}>
           <h3 className={styles['calculator__total-title']}>К возврату</h3>
           <p className={styles['calculator__total-subtitle']}>
-            {totalPriceWithPercent().toLocaleString('fr-FR')} ₽
+            {totalPriceWithPercent.toLocaleString('fr-FR')} ₽
           </p>
           <h3 className={styles['calculator__total-title']}>Проценты в день</h3>
           <p className={styles['calculator__total-subtitle']}>
-            {percent().toLocaleString('fr-FR')} ₽
+            {percent.toLocaleString('fr-FR')} ₽
           </p>
         </div>
       </div>

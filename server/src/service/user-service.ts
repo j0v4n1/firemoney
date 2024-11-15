@@ -175,7 +175,6 @@ class UserService {
   }
 
   async activateNewPassword(number: string, password: string) {
-    console.log(number);
     const user = await UserModel.findOne({ number });
     if (!user) {
       throw ApiError.notFoundError('Пользователь с таким номером не найден');

@@ -11,7 +11,7 @@ import OurClients from '../our-clients/our-clients';
 import OurServices from '../our-services/our-services';
 import Faq from '../faq/faq';
 import GetMoney from '../get-money/get-money';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getUserData } from '../../utils/api';
 import { Spinner } from 'react-bootstrap/';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -22,6 +22,9 @@ import commonStyles from '../../styles/common.module.css';
 import { setIsAuthorizedUser, setTempNumber, setUser } from '../../store/slices/user/user';
 import { setType } from '../../store/slices/modal/modal';
 import { ModalTypes } from '../modal/modal.types';
+import DashboardLoans from '../dashboard-loans/dashboard-loans';
+import DashboardSettings from '../dashboard-settings/dashboard-settings';
+import DashboardPersonal from '../dashboard-personal/dashboard-personal';
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -99,7 +102,7 @@ export default function App() {
           }
         />
         <Route
-          path={'dashboard'}
+          path={'/dashboard'}
           element={
             <>
               <Header type={NavbarType.DASHBOARD} />
@@ -107,8 +110,32 @@ export default function App() {
                 <UserDashboard />
               </main>
             </>
-          }
-        />
+          }>
+          <Route
+            path={'personal'}
+            element={
+              <main>
+                <DashboardPersonal />
+              </main>
+            }
+          />
+          <Route
+            path={'loans'}
+            element={
+              <main>
+                <DashboardLoans />
+              </main>
+            }
+          />
+          <Route
+            path={'settings'}
+            element={
+              <main>
+                <DashboardSettings />
+              </main>
+            }
+          />
+        </Route>
       </Routes>
       <Footer />
       <Modal />

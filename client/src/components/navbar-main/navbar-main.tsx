@@ -42,7 +42,7 @@ export default function NavbarMain({ position }: NavbarProps) {
       {position === NavbarPosition.HEADER ? (
         isAuthorizedUser ? (
           <NavLink
-            to={'/dashboard'}
+            to={'/dashboard/personal'}
             type="button"
             className={`${styles['nav-menu__button']} ${styles['nav-menu__button_underline']}`}>
             {`${name} ${lastName}`}
