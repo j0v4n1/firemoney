@@ -9,7 +9,6 @@ type Loan = {
 const loanSchema = new Schema<Loan>(
   {
     loanAmountWithInterest: {
-      // Сумма кредита с процентами
       type: Number,
       required: true,
       min: 0,
